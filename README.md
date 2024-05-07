@@ -16,7 +16,11 @@ Este projeto é criação de um  aplicativo para um gerenciamento de um E-commer
 
 ### Antes de rodar
 - Verifique a versão do Node e do Npm
-- Utilize um instale as depedencias do node(npm)
+```bash
+node -v
+npm -v
+```
+- Instale as depedencias do node(npm)
 ```bash
 npm install
 ```
@@ -25,7 +29,7 @@ npm install
 npx expo install react-native-screens react-native-safe-area-context
 ```
 
-### Dependencias utilizadas até então
+### Dependencias utilizadas até então utilizadas
 npm install axios ainda não instalado
 npm install @react-navigation/native @react-navigation/native-stack
 npx expo install react-native-screens react-native-safe-area-context
