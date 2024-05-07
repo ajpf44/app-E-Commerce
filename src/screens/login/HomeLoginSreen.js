@@ -13,9 +13,8 @@ import { useState } from "react";
 const rightEmail = "teste@"
 const rightPassword = "123"
 
-function verifyLogin(inputEmail, inputPassword, nav){
+function verifyLogin(inputEmail, inputPassword){
     if(inputEmail == rightEmail && inputPassword == rightPassword){
-        nav.navigate('app');
         return true;
     }else{
         return false;
@@ -23,8 +22,9 @@ function verifyLogin(inputEmail, inputPassword, nav){
 }
 
 function HomeLoginScreen({navigation}) {
-    const [inputEmail, setInputEmail] = useState();
-    const [inputPassword, setInputPassword] = useState();
+    const [inputEmail, setInputEmail] = useState('');
+    const [inputPassword, setInputPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState(true)
 
     return (
         <View style={styles.container}>
@@ -44,9 +44,23 @@ function HomeLoginScreen({navigation}) {
             </View>
             <View style={styles.buttonsContainer}>
                 <Button title="Logar" color="black" 
-                    onPress={()=>verifyLogin(inputEmail, inputPassword, navigation)}
+                    onPress={()=>{
+                        const sucessfullLogin = verifyLogin(inputEmail, inputPassword);
+
+                        if(sucessfullLogin){
+                            setLoginStatus(true);
+                            navigation.navigate('app');
+                        }else{
+                            setLoginStatus(false)
+                        }
+                    }}
                 />
                 <Button title="Criar Conta" color="black" />
+            </View>
+            <View style={styles.inputContainer}>
+                <Text
+                    style={styles.wrongLoginStatus}
+                >{loginStatus?"":"Email e/ou Senha errados"}</Text>
             </View>
         </View>
     );
@@ -73,6 +87,9 @@ const styles = StyleSheet.create({
         gap: 10,
         marginTop: 10,
     },
+    wrongLoginStatus: {
+        color: "red"
+    }
 });
 
 export default HomeLoginScreen;
