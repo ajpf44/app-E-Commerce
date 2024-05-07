@@ -10,9 +10,11 @@ import {
 } from "react-native";
 import { useState } from "react";
 
+//futuramente será feito a verificação via api
 const rightEmail = "teste@"
 const rightPassword = "123"
 
+//Verifica se o email e senha estão corretos
 function verifyLogin(inputEmail, inputPassword){
     if(inputEmail == rightEmail && inputPassword == rightPassword){
         return true;
@@ -24,7 +26,9 @@ function verifyLogin(inputEmail, inputPassword){
 function HomeLoginScreen({navigation}) {
     const [inputEmail, setInputEmail] = useState('');
     const [inputPassword, setInputPassword] = useState('');
-    const [loginStatus, setLoginStatus] = useState(true)
+    //LoginStatus verifica a mensagem quando a senha e o email estão errados
+    //Se estiver false a msg é mostrada, se estiver true a msg é escondida
+    const [loginStatus, setLoginStatus] = useState(true) 
 
     return (
         <View style={styles.container}>
