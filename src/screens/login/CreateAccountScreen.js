@@ -7,24 +7,56 @@ import {
     StyleSheet,
     Button,
     Dimensions,
+    ActivityIndicator,
+    Pressable,
 } from "react-native";
 import {
     isEmailAlreadyRegistered,
     registerEmployee,
 } from "../../services/employees";
+async function createAccount(
+    inputEmail,
+    inputPassword,
+    inputName,
+    navigation,
+    setCreationStatus,
+    setIsCreating
+) {
+    if (inputEmail == "" || inputPassword == "" || inputName == "") {
+        setCreationStatus("Campos inválidos");
+        return;
+    }
 
-function createStatus(creationStatus) {
-    if (creationStatus == "invalid") return "Campos inválidos";
-    else if (creationStatus == "emailAlreadyRegistered")
-        return "Email já cadastrado";
-    else return "";
+    setIsCreating(true);
+    const isEmailAvailable = !(await isEmailAlreadyRegistered(inputEmail));
+
+    if (isEmailAvailable) {
+        const employee = {
+            name: inputName,
+            email: inputEmail,
+            password: inputPassword,
+        };
+
+        await registerEmployee(employee);
+        setCreationStatus("");
+
+        setIsCreating(false)
+        navigation.navigate("HomeLoginScreen");
+    } else {
+        setIsCreating(false)
+        setCreationStatus("Email já cadastrado");
+    }
 }
 
-function CreateAccountScreen({navigation}) {
+function CreateAccountScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const [inputName, setInputName] = useState("");
-    const [creationStatus, setCreationStatus] = useState("valid");
+
+    const [isCreating, setIsCreating] = useState(false);
+
+    //Resposta para o usuário se a conta foi criada ou não, ou porque
+    const [creationStatus, setCreationStatus] = useState("");
 
     return (
         <View style={styles.container}>
@@ -53,42 +85,27 @@ function CreateAccountScreen({navigation}) {
                 />
             </View>
             <View style={styles.buttonsContainer}>
-                <Button
-                    title="Criar Conta"
-                    color="black"
-                    onPress={async () => {
-                        if (
-                            inputEmail == "" ||
-                            inputPassword == "" ||
-                            inputName == ""
-                        ) {
-                            setCreationStatus("invalid");
-                            return;
-                        }
-
-                        const isEmailAvailable =
-                            !(await isEmailAlreadyRegistered(inputEmail));
-
-                        if (isEmailAvailable) {
-                            const employee = {
-                                name: inputName,
-                                email: inputEmail,
-                                password: inputPassword,
-                            };
-
-                            registerEmployee(employee);
-                            setCreationStatus("valid");
-
-                            navigation.navigate("HomeLoginScreen");
-                        } else {
-                            setCreationStatus("emailAlreadyRegistered");
-                        }
-                    }}
-                />
+                <Pressable
+                    style={styles.PressableCreateAccount}
+                    onPress={async () =>
+                        createAccount(
+                            inputEmail,
+                            inputPassword,
+                            inputName,
+                            navigation,
+                            setCreationStatus,
+                            setIsCreating
+                        )
+                    }
+                >
+                    <Text style={styles.PressableText}>CRIAR CONTA</Text>
+                    {isCreating?<ActivityIndicator></ActivityIndicator>:""}
+                    
+                </Pressable>
             </View>
             <View style={styles.inputContainer}>
                 <Text style={styles.creationStatus}>
-                    {createStatus(creationStatus)}
+                    {creationStatus}
                 </Text>
             </View>
         </View>
@@ -119,6 +136,19 @@ const styles = StyleSheet.create({
     creationStatus: {
         color: "red",
     },
+    PressableCreateAccount:{
+        backgroundColor: "black",
+        paddingVertical: 8,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 2,
+        flexDirection: "row",
+    },
+    PressableText:{
+        color: 'white',
+        fontWeight: "500",
+        marginRight: 20
+    }
 });
 
 export default CreateAccountScreen;
