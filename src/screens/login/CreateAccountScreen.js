@@ -110,7 +110,6 @@ function CreateAccountScreen({ navigation }) {
                     }
                 >
                     <Text style={styles.PressableText}>CRIAR CONTA</Text>
-                    {isCreating?<ActivityIndicator></ActivityIndicator>:""}
                     
                 </Pressable>
             </View>
@@ -118,6 +117,8 @@ function CreateAccountScreen({ navigation }) {
                 <Text style={styles.creationStatus}>
                     {creationStatus}
                 </Text>
+
+                {isCreating?<ActivityIndicator></ActivityIndicator>:<Text> </Text>}
             </View>
         </View>
     );
@@ -146,6 +147,7 @@ const styles = StyleSheet.create({
     },
     creationStatus: {
         color: "red",
+        marginBottom: 10
     },
     PressableCreateAccount:{
         backgroundColor: "black",
@@ -153,12 +155,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 2,
-        flexDirection: "row",
     },
     PressableText:{
         color: 'white',
         fontWeight: "500",
-        marginRight: 20
     }
 });
 
