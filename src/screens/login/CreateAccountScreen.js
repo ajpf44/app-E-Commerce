@@ -11,9 +11,20 @@ import {
     Pressable,
 } from "react-native";
 import {
-    isEmailAlreadyRegistered,
+    getAllEmployess,
     registerEmployee,
 } from "../../services/employees";
+
+async function isEmailAlreadyRegistered(inputEmail){
+    const employees = await getAllEmployess();
+    
+    for( let {email} of employees){
+        if(email == inputEmail) return true;
+    }
+
+    return false;
+}
+
 async function createAccount(
     inputEmail,
     inputPassword,

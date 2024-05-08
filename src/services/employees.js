@@ -42,14 +42,4 @@ async function getAllEmployess(){
     }
 }
 
-async function isEmailAlreadyRegistered(inputEmail){
-    const employees = await getAllEmployess();
-    
-    for( let {email} of employees){
-        if(email == inputEmail) return true;
-    }
-
-    return false;
-}
-
-export {registerEmployee, isEmailAlreadyRegistered};
+export {registerEmployee, getAllEmployess};
