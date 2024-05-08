@@ -2,7 +2,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import HomeLoginScreen from "../screens/login/HomeLoginSreen";
+import HomeLoginScreen from "../screens/login/HomeLoginScreen";
 import TesteApp from "../screens/login/TesteApp";
 import CreateAccountScreen from "../screens/login/CreateAccountScreen";
 

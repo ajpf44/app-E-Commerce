@@ -1,3 +1,4 @@
+//Alexandre
 import { useState } from "react";
 import {
     View,
@@ -19,7 +20,7 @@ function createStatus(creationStatus) {
     else return "";
 }
 
-function CreateAccountScreen() {
+function CreateAccountScreen({navigation}) {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const [inputName, setInputName] = useState("");
@@ -77,6 +78,8 @@ function CreateAccountScreen() {
 
                             registerEmployee(employee);
                             setCreationStatus("valid");
+
+                            navigation.navigate("HomeLoginScreen");
                         } else {
                             setCreationStatus("emailAlreadyRegistered");
                         }
