@@ -1,9 +1,9 @@
 //Alexandre
 import api from "./api";
 
-
 /*
 Estrutura do employee
+o id é colocado automaticamente pelo Firebase
 const employee= {
     name: "Chuck Norris",
     email: "chucknorrisdocodigo@gmail.com",
@@ -14,9 +14,9 @@ const employee= {
 async function registerEmployee(employee){
     try {
         const res = await api.post('/employees.json', employee)
-        console.log("Registrando Usuário, resposta: ", res.status)
+        console.log("Registrando usuário, resposta: ", res.status)
     } catch (error) {
-        console.log("Erro registrando usuário: ", error);
+        console.log("Registrando usuário, errro: ", error);
     }
 }
 
