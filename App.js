@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import LoginStack from './src/routes/LoginStack.routes';
 
 export default function App() {
+  console.log("App running")
   return (
     <LoginStack></LoginStack>
   );

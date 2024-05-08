@@ -7,28 +7,36 @@ import {
     Button,
     StyleSheet,
     Dimensions,
+    ActivityIndicator,
 } from "react-native";
 import { useState } from "react";
 
-//futuramente será feito a verificação via api
-const rightEmail = "teste@";
-const rightPassword = "123";
+import { getAllEmployess } from "../../services/employees";
+import sha256 from "../../utils/cryptography";
 
 //Verifica se o email e senha estão corretos
-function verifyLogin(inputEmail, inputPassword) {
-    if (inputEmail == rightEmail && inputPassword == rightPassword) {
-        return true;
-    } else {
-        return false;
-    }
+async function verifyLogin(inputEmail, inputPassword) {
+    const employees = await getAllEmployess();
+
+    const hashedInputPassword = await sha256(inputPassword);
+
+    const employee = employees.find(
+        (e) =>
+            e.email === inputEmail && e.password == hashedInputPassword
+    );
+
+    return !!employee;
 }
 
 function HomeLoginScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
+
     //LoginStatus verifica a mensagem quando a senha e o email estão errados
     //Se estiver false a msg é mostrada, se estiver true a msg é escondida
     const [loginStatus, setLoginStatus] = useState(true);
+
+    const [isVerifyingLogin, setIsVerifyingLogin] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -50,17 +58,20 @@ function HomeLoginScreen({ navigation }) {
                 <Button
                     title="Logar"
                     color="black"
-                    onPress={() => {
-                        const sucessfullLogin = verifyLogin(
+                    onPress={async () => {
+                        setIsVerifyingLogin(true);
+                        const sucessfullLogin = await verifyLogin(
                             inputEmail,
                             inputPassword
                         );
 
                         if (sucessfullLogin) {
                             setLoginStatus(true);
+                            setIsVerifyingLogin(false);
                             navigation.navigate("app");
                         } else {
                             setLoginStatus(false);
+                            setIsVerifyingLogin(false);
                         }
                     }}
                 />
@@ -74,6 +85,11 @@ function HomeLoginScreen({ navigation }) {
                 <Text style={styles.wrongLoginStatus}>
                     {loginStatus ? "" : "Email e/ou Senha errados"}
                 </Text>
+                {isVerifyingLogin ? (
+                    <ActivityIndicator></ActivityIndicator>
+                ) : (
+                    <Text> </Text>
+                )}
             </View>
         </View>
     );
@@ -102,6 +118,7 @@ const styles = StyleSheet.create({
     },
     wrongLoginStatus: {
         color: "red",
+        marginBottom: 10,
     },
 });
 

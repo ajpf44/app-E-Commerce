@@ -12,7 +12,8 @@ Este projeto é criação de um  aplicativo para um gerenciamento de um E-commer
 
 ### Recursos Implementados:
 
--   
+-   Tela de Login, com validação 
+-   Tela de Criação de Contas, com validação e criptografia
 
 ### Antes de rodar
 - Verifique a versão do Node e do Npm
@@ -30,6 +31,9 @@ npx expo install react-native-screens react-native-safe-area-context
 ```
 
 ### Dependencias utilizadas até então utilizadas
-npm install axios ainda não instalado
-npm install @react-navigation/native @react-navigation/native-stack
-npx expo install react-native-screens react-native-safe-area-context
+- npm install axios
+- npm install @react-navigation/native @react-navigation/native-stack
+- npx expo install react-native-screens react-native-safe-area-context
+
+
+- npx expo install expo-crypto (Responsável pela Cripografia)
