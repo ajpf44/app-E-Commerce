@@ -12,13 +12,17 @@ import {
 import { useState } from "react";
 
 import { getAllEmployess } from "../../services/employees";
+import sha256 from "../../utils/cryptography";
 
 //Verifica se o email e senha estão corretos
 async function verifyLogin(inputEmail, inputPassword) {
     const employees = await getAllEmployess();
 
+    const hashedInputPassword = await sha256(inputPassword);
+
     const employee = employees.find(
-        (e) => e.email === inputEmail && e.password === inputPassword
+        (e) =>
+            e.email === inputEmail && e.password == hashedInputPassword
     );
 
     return !!employee;
@@ -55,7 +59,7 @@ function HomeLoginScreen({ navigation }) {
                     title="Logar"
                     color="black"
                     onPress={async () => {
-                        setIsVerifyingLogin(true)
+                        setIsVerifyingLogin(true);
                         const sucessfullLogin = await verifyLogin(
                             inputEmail,
                             inputPassword
@@ -63,11 +67,11 @@ function HomeLoginScreen({ navigation }) {
 
                         if (sucessfullLogin) {
                             setLoginStatus(true);
-                            setIsVerifyingLogin(false)
+                            setIsVerifyingLogin(false);
                             navigation.navigate("app");
                         } else {
                             setLoginStatus(false);
-                            setIsVerifyingLogin(false)
+                            setIsVerifyingLogin(false);
                         }
                     }}
                 />
@@ -81,8 +85,12 @@ function HomeLoginScreen({ navigation }) {
                 <Text style={styles.wrongLoginStatus}>
                     {loginStatus ? "" : "Email e/ou Senha errados"}
                 </Text>
-                {isVerifyingLogin?<ActivityIndicator></ActivityIndicator>:<Text> </Text>}
-            </View>            
+                {isVerifyingLogin ? (
+                    <ActivityIndicator></ActivityIndicator>
+                ) : (
+                    <Text> </Text>
+                )}
+            </View>
         </View>
     );
 }
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
     },
     wrongLoginStatus: {
         color: "red",
-        marginBottom: 10
+        marginBottom: 10,
     },
 });
 
