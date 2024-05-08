@@ -14,6 +14,7 @@ import {
     getAllEmployess,
     registerEmployee,
 } from "../../services/employees";
+import sha256 from "../../utils/cryptography";
 
 async function isEmailAlreadyRegistered(inputEmail){
     const employees = await getAllEmployess();
@@ -40,12 +41,13 @@ async function createAccount(
 
     setIsCreating(true);
     const isEmailAvailable = !(await isEmailAlreadyRegistered(inputEmail));
+    const hashedPassword = await sha256(inputPassword);
 
     if (isEmailAvailable) {
         const employee = {
             name: inputName,
             email: inputEmail,
-            password: inputPassword,
+            password: hashedPassword,
         };
 
         await registerEmployee(employee);

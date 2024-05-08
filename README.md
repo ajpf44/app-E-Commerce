@@ -30,6 +30,9 @@ npx expo install react-native-screens react-native-safe-area-context
 ```
 
 ### Dependencias utilizadas até então utilizadas
-npm install axios ainda não instalado
-npm install @react-navigation/native @react-navigation/native-stack
-npx expo install react-native-screens react-native-safe-area-context
+- npm install axios
+- npm install @react-navigation/native @react-navigation/native-stack
+- npx expo install react-native-screens react-native-safe-area-context
+
+
+- npx expo install expo-crypto (Responsável pela Cripografia)
