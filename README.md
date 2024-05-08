@@ -12,7 +12,8 @@ Este projeto é criação de um  aplicativo para um gerenciamento de um E-commer
 
 ### Recursos Implementados:
 
--   
+-   Tela de Login, com validação 
+-   Tela de Criação de Contas, com validação e criptografia
 
 ### Antes de rodar
 - Verifique a versão do Node e do Npm
