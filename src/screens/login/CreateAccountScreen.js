@@ -7,11 +7,24 @@ import {
     Button,
     Dimensions,
 } from "react-native";
+import {
+    isEmailAlreadyRegistered,
+    registerEmployee,
+} from "../../services/employees";
+
+function createStatus(creationStatus) {
+    if (creationStatus == "invalid") return "Campos inválidos";
+    else if (creationStatus == "emailAlreadyRegistered")
+        return "Email já cadastrado";
+    else return "";
+}
 
 function CreateAccountScreen() {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const [inputName, setInputName] = useState("");
+    const [creationStatus, setCreationStatus] = useState("valid");
+
     return (
         <View style={styles.container}>
             <View style={styles.inputContainer}>
@@ -39,7 +52,41 @@ function CreateAccountScreen() {
                 />
             </View>
             <View style={styles.buttonsContainer}>
-                <Button title="Criar Conta" color="black" />
+                <Button
+                    title="Criar Conta"
+                    color="black"
+                    onPress={async () => {
+                        if (
+                            inputEmail == "" ||
+                            inputPassword == "" ||
+                            inputName == ""
+                        ) {
+                            setCreationStatus("invalid");
+                            return;
+                        }
+
+                        const isEmailAvailable =
+                            !(await isEmailAlreadyRegistered(inputEmail));
+
+                        if (isEmailAvailable) {
+                            const employee = {
+                                name: inputName,
+                                email: inputEmail,
+                                password: inputPassword,
+                            };
+
+                            registerEmployee(employee);
+                            setCreationStatus("valid");
+                        } else {
+                            setCreationStatus("emailAlreadyRegistered");
+                        }
+                    }}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Text style={styles.creationStatus}>
+                    {createStatus(creationStatus)}
+                </Text>
             </View>
         </View>
     );
@@ -66,7 +113,7 @@ const styles = StyleSheet.create({
         gap: 10,
         marginTop: 10,
     },
-    wrongLoginStatus: {
+    creationStatus: {
         color: "red",
     },
 });
