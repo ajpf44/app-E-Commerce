@@ -52,4 +52,4 @@ async function getAllEmployess(){
     }
 }
 
-export {registerEmployee, getAllEmployess};
+export {registerEmployee, getAllEmployess, deleteEmployee};
