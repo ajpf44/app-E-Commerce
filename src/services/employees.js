@@ -16,7 +16,17 @@ async function registerEmployee(employee){
         const res = await api.post('/employees.json', employee)
         console.log("Registrando usuário, resposta: ", res.status)
     } catch (error) {
-        console.log("Registrando usuário, errro: ", error);
+        console.log("Registrando usuário, erro: ", error);
+    }
+}
+
+async function deleteEmployee(id){
+    try{
+        const res = await api.delete(`/employees/${id}.json`)
+
+        console.log(`Deletando o funcionaio de id: ${id}, status: ${res.status}`)
+    }catch(err){
+        console.log("Error ao deletar funcionário:" + err);
     }
 }
 
@@ -42,4 +52,4 @@ async function getAllEmployess(){
     }
 }
 
-export {registerEmployee, getAllEmployess};
+export {registerEmployee, getAllEmployess, deleteEmployee};

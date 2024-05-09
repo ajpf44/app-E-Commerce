@@ -29,8 +29,8 @@ async function verifyLogin(inputEmail, inputPassword) {
 }
 
 function HomeLoginScreen({ navigation }) {
-    const [inputEmail, setInputEmail] = useState("");
-    const [inputPassword, setInputPassword] = useState("");
+    const [inputEmail, setInputEmail] = useState("admin");
+    const [inputPassword, setInputPassword] = useState("admin");
 
     //LoginStatus verifica a mensagem quando a senha e o email estão errados
     //Se estiver false a msg é mostrada, se estiver true a msg é escondida
@@ -43,6 +43,7 @@ function HomeLoginScreen({ navigation }) {
             <View style={styles.inputContainer}>
                 <Text>Email:</Text>
                 <TextInput
+                    value={inputEmail}
                     onChangeText={setInputEmail}
                     style={styles.textInput}
                 />
@@ -50,6 +51,7 @@ function HomeLoginScreen({ navigation }) {
             <View style={styles.inputContainer}>
                 <Text>Senha: </Text>
                 <TextInput
+                    value={inputPassword}
                     onChangeText={setInputPassword}
                     style={styles.textInput}
                 />
