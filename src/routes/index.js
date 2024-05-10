@@ -1,19 +1,21 @@
 import { NavigationContainer } from '@react-navigation/native'
-import Stack from './stack.routes'
-import Tab from './bottom-tabs.routes'
+import LoginStack from './LoginStack.routes';
+import Tabs from './bottomTabs';
+
 
 export default function Routes() {
+    const isLogged = true;
+
     return(
-        <NavigationContainer>
-            <Stack />
-            <Tab />
+        <>
+            {!isLogged && <LoginStack /> }
+            {isLogged && <Tabs />}
                 {/* NAVEGAÇÃO DO MIGUEL 
                 <Stack.Navigator initialRouteName="ProductHome">
                     <Stack.Screen name="ProductHome" component={ProductHome} />
                     <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
                 </Stack.Navigator> 
                 */}
-                
-        </NavigationContainer>
+        </>
     )
 }

@@ -15,7 +15,6 @@ import EmployeeList from "../../components/app/EmployeeList";
 
 function EmployeeCRUD() {
     
-
     return (
         <View style={styles.container}>
             <EmployeeList />
