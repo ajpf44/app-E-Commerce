@@ -7,7 +7,13 @@ export default function Routes() {
         <NavigationContainer>
             <Stack />
             <Tab />
-            
+                {/* NAVEGAÇÃO DO MIGUEL 
+                <Stack.Navigator initialRouteName="ProductHome">
+                    <Stack.Screen name="ProductHome" component={ProductHome} />
+                    <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+                </Stack.Navigator> 
+                */}
+                
         </NavigationContainer>
     )
 }
