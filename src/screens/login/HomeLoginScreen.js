@@ -9,13 +9,15 @@ import {
     Dimensions,
     ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { getAllEmployess } from "../../services/employees";
 import sha256 from "../../utils/cryptography";
+import { signIn } from "../../services/auth";
+import { AuthContext } from "../../contexts/AuthContext";
 
 //Verifica se o email e senha estão corretos
-async function verifyLogin(inputEmail, inputPassword) {
+async function verifyLogin(inputEmail, inputPassword, setToken) {
     const employees = await getAllEmployess();
 
     const hashedInputPassword = await sha256(inputPassword);
@@ -25,12 +27,20 @@ async function verifyLogin(inputEmail, inputPassword) {
             e.email === inputEmail && e.password == hashedInputPassword
     );
 
+    const idToken = await signIn(inputEmail, inputPassword)
+    setToken(idToken);
+
+    if(!idToken){
+        return false;
+    }
+
     return !!employee;
 }
 
 function HomeLoginScreen({ navigation }) {
-    const [inputEmail, setInputEmail] = useState("admin");
-    const [inputPassword, setInputPassword] = useState("admin");
+    const [inputEmail, setInputEmail] = useState("teste@teste.com");
+    const [inputPassword, setInputPassword] = useState("teste@123");
+    const authCtx = useContext(AuthContext);
 
     //LoginStatus verifica a mensagem quando a senha e o email estão errados
     //Se estiver false a msg é mostrada, se estiver true a msg é escondida
@@ -64,13 +74,13 @@ function HomeLoginScreen({ navigation }) {
                         setIsVerifyingLogin(true);
                         const sucessfullLogin = await verifyLogin(
                             inputEmail,
-                            inputPassword
+                            inputPassword,
+                            authCtx.setToken
                         );
 
                         if (sucessfullLogin) {
                             setLoginStatus(true);
                             setIsVerifyingLogin(false);
-                            navigation.navigate("app");
                         } else {
                             setLoginStatus(false);
                             setIsVerifyingLogin(false);

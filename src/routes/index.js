@@ -1,13 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native'
-import Stack from './stack.routes'
-import Tab from './bottom-tabs.routes'
+import LoginStack from './LoginStack.routes';
+import Tabs from './bottomTabs';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+
 
 export default function Routes() {
+    const authCtx = useContext(AuthContext)
+
     return(
-        <NavigationContainer>
-            <Stack />
-            <Tab />
-            
-        </NavigationContainer>
+        <>
+            {!authCtx.isLogged && <LoginStack /> }
+            {authCtx.isLogged && <Tabs />}
+                
+        </>
     )
 }
