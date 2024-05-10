@@ -27,4 +27,24 @@ export const updateProduct = async (productId, updatedData) => {
     }
 }
 
+export const getAllProducts = async ()=>{
+    try {
+        const products = [];
+        const res = await api.get("/Products.json");
+
+        for(let productId in res.data){
+            products.push({
+                id: productId,
+                ...res.data[productId]
+            })
+        }
+
+        return products;
+    } catch (error) {
+        console.log("Error getting all products: " + error)
+
+        return;
+    }
+}
+
 
