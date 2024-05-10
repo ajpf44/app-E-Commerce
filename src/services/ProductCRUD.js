@@ -31,7 +31,7 @@ export const getAllProducts = async ()=>{
     try {
         const products = [];
         const res = await api.get("/Products.json");
-
+        console.log(res);
         for(let productId in res.data){
             products.push({
                 id: productId,
