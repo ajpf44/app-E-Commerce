@@ -1,19 +1,24 @@
 //Matheus Mello 
 //Tela para registrar o produto
-
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from "react-native";
 import { useState } from "react";
 import ImagePicker from 'expo-image-picker';
-import { PostProduct } from "../../services/ProductRegister";
+import { postProduct } from "../../services/ProductCRUD";
 
 function RegisterProduct() {
   const [image, setImage] = useState(null);
   const [productName, setProductName] = useState('');
+  const [productPrice, setProductPrice] = useState('');
+  const [productSize, setProductSize] = useState('');
+  const [productDescription, setProductDescription] = useState('');
 
   const sendDatabase = async () => {
     try {
-      await PostProduct({ name: productName, image: image });
+      await postProduct({ name: productName, price: productPrice, size: productSize, description: productDescription, image: image });
       setProductName('');
+      setProductPrice('');
+      setProductSize('');
+      setProductDescription('');
       setImage(null);
     } catch (error) {
       console.log('Erro ao enviar produto:', error);
@@ -45,6 +50,24 @@ function RegisterProduct() {
         placeholder='Insira o Nome do Produto'
         value={productName}
         onChangeText={setProductName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Insira o Preço do Produto'
+        value={productPrice}
+        onChangeText={setProductPrice}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Insira o Tamanho do Produto'
+        value={productSize}
+        onChangeText={setProductSize}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder='Insira a Descrição do Produto'
+        value={productDescription}
+        onChangeText={setProductDescription}
       />
       <TouchableOpacity
         style={styles.buttonRegister}
