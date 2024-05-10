@@ -11,7 +11,7 @@ const employee= {
 }
 */
 
-async function registerEmployee(employee){
+async function registerEmployee(employee, token){
     try {
         const res = await api.post('/employees.json', employee)
         console.log("Registrando usuário, resposta: ", res.status)
@@ -20,7 +20,7 @@ async function registerEmployee(employee){
     }
 }
 
-async function deleteEmployee(id){
+async function deleteEmployee(id, token){
     try{
         const res = await api.delete(`/employees/${id}.json`)
 
@@ -30,10 +30,10 @@ async function deleteEmployee(id){
     }
 }
 
-async function getAllEmployess(){
+async function getAllEmployess(token){
     const registeredEmployees = [];
     try {
-        const res = await api.get('employees.json');
+        const res = await api.get(`employees.json?auth=${token}`);
         
         for(let objKey in res.data){
             const employee = {

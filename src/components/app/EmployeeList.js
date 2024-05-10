@@ -7,11 +7,12 @@ import {
     StyleSheet,
     Alert,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { FontAwesome } from "@expo/vector-icons";
 
 import { deleteEmployee, getAllEmployess } from "../../services/employees";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const EmployeeFrame = ({ employee, index }) => {
 
@@ -59,9 +60,11 @@ const EmployeeFrame = ({ employee, index }) => {
 
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
+    const authCtx = useContext(AuthContext);
+
 
     useEffect(() => {
-        const getEmployess = async () => setEmployees(await getAllEmployess());
+        const getEmployess = async () => setEmployees(await getAllEmployess(authCtx.token));
         getEmployess();
     }, [employees]);
 
