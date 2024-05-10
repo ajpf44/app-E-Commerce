@@ -7,8 +7,6 @@ async function authenticate(mode, email, password) {
     try {
         const authURL = `${baseAuthURL}${mode}?key=${apiKey}`;
 
-        console.log(authURL);
-
         const res = await axios.post(authURL, {
             email: email,
             password: password,

@@ -11,30 +11,29 @@ import {
 } from "react-native";
 import { useContext, useState } from "react";
 
-import { getAllEmployess } from "../../services/employees";
-import sha256 from "../../utils/cryptography";
 import { signIn } from "../../services/auth";
 import { AuthContext } from "../../contexts/AuthContext";
 
 //Verifica se o email e senha estão corretos
-async function verifyLogin(inputEmail, inputPassword, setToken) {
-    const employees = await getAllEmployess();
+async function startSession(
+    inputEmail,
+    inputPassword,
+    setToken,
+    setLoginStatus,
+    setIsVerifyingLogin
+) {
+    setIsVerifyingLogin(true);
 
-    const hashedInputPassword = await sha256(inputPassword);
-
-    const employee = employees.find(
-        (e) =>
-            e.email === inputEmail && e.password == hashedInputPassword
-    );
-
-    const idToken = await signIn(inputEmail, inputPassword)
+    const idToken = await signIn(inputEmail, inputPassword);
     setToken(idToken);
 
-    if(!idToken){
-        return false;
+    if (!!idToken) {
+        setLoginStatus(true);
+    } else {
+        setLoginStatus(false);
     }
 
-    return !!employee;
+    setIsVerifyingLogin(false);
 }
 
 function HomeLoginScreen({ navigation }) {
@@ -67,26 +66,23 @@ function HomeLoginScreen({ navigation }) {
                 />
             </View>
             <View style={styles.buttonsContainer}>
-                <Button
-                    title="Logar"
-                    color="black"
-                    onPress={async () => {
-                        setIsVerifyingLogin(true);
-                        const sucessfullLogin = await verifyLogin(
-                            inputEmail,
-                            inputPassword,
-                            authCtx.setToken
-                        );
-
-                        if (sucessfullLogin) {
-                            setLoginStatus(true);
-                            setIsVerifyingLogin(false);
-                        } else {
-                            setLoginStatus(false);
-                            setIsVerifyingLogin(false);
-                        }
-                    }}
-                />
+                {isVerifyingLogin ? (
+                    <ActivityIndicator />
+                ) : (
+                    <Button
+                        title="Logar"
+                        color="black"
+                        onPress={async () => {
+                            await startSession(
+                                inputEmail,
+                                inputPassword,
+                                authCtx.setToken,
+                                setLoginStatus,
+                                setIsVerifyingLogin
+                            );
+                        }}
+                    />
+                )}
                 <Button
                     title="Criar Conta"
                     color="black"
@@ -94,14 +90,7 @@ function HomeLoginScreen({ navigation }) {
                 />
             </View>
             <View style={styles.inputContainer}>
-                <Text style={styles.wrongLoginStatus}>
-                    {loginStatus ? "" : "Email e/ou Senha errados"}
-                </Text>
-                {isVerifyingLogin ? (
-                    <ActivityIndicator></ActivityIndicator>
-                ) : (
-                    <Text> </Text>
-                )}
+                <Text style={styles.loginStatus}>{loginStatus}</Text>
             </View>
         </View>
     );
@@ -128,7 +117,7 @@ const styles = StyleSheet.create({
         gap: 10,
         marginTop: 10,
     },
-    wrongLoginStatus: {
+    loginStatus: {
         color: "red",
         marginBottom: 10,
     },
