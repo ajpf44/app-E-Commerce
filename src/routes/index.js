@@ -4,18 +4,13 @@ import Tabs from './bottomTabs';
 
 
 export default function Routes() {
-    const isLogged = true;
+    const isLogged = false;
 
     return(
         <>
             {!isLogged && <LoginStack /> }
             {isLogged && <Tabs />}
-                {/* NAVEGAÇÃO DO MIGUEL 
-                <Stack.Navigator initialRouteName="ProductHome">
-                    <Stack.Screen name="ProductHome" component={ProductHome} />
-                    <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
-                </Stack.Navigator> 
-                */}
+                
         </>
     )
 }

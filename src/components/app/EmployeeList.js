@@ -44,7 +44,6 @@ const EmployeeFrame = ({ employee, index }) => {
                             },
                             {
                                 text: "Não",
-                                onPress: () => {},
                             },
                         ]
 
