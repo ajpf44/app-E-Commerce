@@ -10,17 +10,15 @@ import {
     ActivityIndicator,
     Pressable,
 } from "react-native";
-import {
-    getAllEmployess,
-    registerEmployee,
-} from "../../services/employees";
+import { getAllEmployess, registerEmployee } from "../../services/employees";
 import sha256 from "../../utils/cryptography";
+import { signUp } from "../../services/auth";
 
-async function isEmailAlreadyRegistered(inputEmail){
+async function isEmailAlreadyRegistered(inputEmail) {
     const employees = await getAllEmployess();
-    
-    for( let {email} of employees){
-        if(email == inputEmail) return true;
+
+    for (let { email } of employees) {
+        if (email == inputEmail) return true;
     }
 
     return false;
@@ -44,19 +42,27 @@ async function createAccount(
     const hashedPassword = await sha256(inputPassword);
 
     if (isEmailAvailable) {
+        const resAuth = await signUp(inputEmail, inputPassword);
+        
+        if (!resAuth) {
+            setCreationStatus("Insira um email válido e uma senha de no mínimo 6 caracteres\n");
+            setIsCreating(false);
+            return;
+        }
+
         const employee = {
             name: inputName,
             email: inputEmail,
             password: hashedPassword,
         };
-
         await registerEmployee(employee);
-        setCreationStatus("");
 
-        setIsCreating(false)
+        setCreationStatus("");
+        setIsCreating(false);
+
         navigation.navigate("HomeLoginScreen");
     } else {
-        setIsCreating(false)
+        setIsCreating(false);
         setCreationStatus("Email já cadastrado");
     }
 }
@@ -98,29 +104,30 @@ function CreateAccountScreen({ navigation }) {
                 />
             </View>
             <View style={styles.buttonsContainer}>
-                <Pressable
-                    style={styles.PressableCreateAccount}
-                    onPress={async () =>
-                        createAccount(
-                            inputEmail,
-                            inputPassword,
-                            inputName,
-                            navigation,
-                            setCreationStatus,
-                            setIsCreating
-                        )
-                    }
-                >
-                    <Text style={styles.PressableText}>CRIAR CONTA</Text>
-                    
-                </Pressable>
+                {!isCreating && (
+                    <Pressable
+                        style={styles.PressableCreateAccount}
+                        onPress={async () =>
+                            createAccount(
+                                inputEmail,
+                                inputPassword,
+                                inputName,
+                                navigation,
+                                setCreationStatus,
+                                setIsCreating
+                            )
+                        }
+                    >
+                        <Text style={styles.PressableText}>CRIAR CONTA</Text>
+                    </Pressable>
+                )}
+
+                {isCreating && (
+                    <ActivityIndicator size={35}></ActivityIndicator>
+                )}
             </View>
             <View style={styles.inputContainer}>
-                <Text style={styles.creationStatus}>
-                    {creationStatus}
-                </Text>
-
-                {isCreating?<ActivityIndicator></ActivityIndicator>:<Text> </Text>}
+                <Text style={styles.creationStatus}>{creationStatus}</Text>
             </View>
         </View>
     );
@@ -149,19 +156,19 @@ const styles = StyleSheet.create({
     },
     creationStatus: {
         color: "red",
-        marginBottom: 10
+        marginBottom: 10,
     },
-    PressableCreateAccount:{
+    PressableCreateAccount: {
         backgroundColor: "black",
         paddingVertical: 8,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 2,
     },
-    PressableText:{
-        color: 'white',
+    PressableText: {
+        color: "white",
         fontWeight: "500",
-    }
+    },
 });
 
 export default CreateAccountScreen;

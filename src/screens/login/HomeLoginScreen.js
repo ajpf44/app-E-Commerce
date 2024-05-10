@@ -13,6 +13,7 @@ import { useState } from "react";
 
 import { getAllEmployess } from "../../services/employees";
 import sha256 from "../../utils/cryptography";
+import { signIn } from "../../services/auth";
 
 //Verifica se o email e senha estão corretos
 async function verifyLogin(inputEmail, inputPassword) {
@@ -25,12 +26,18 @@ async function verifyLogin(inputEmail, inputPassword) {
             e.email === inputEmail && e.password == hashedInputPassword
     );
 
+    const idToken = await signIn(inputEmail, inputPassword)
+
+    if(!idToken){
+        return false;
+    }
+
     return !!employee;
 }
 
 function HomeLoginScreen({ navigation }) {
-    const [inputEmail, setInputEmail] = useState("admin");
-    const [inputPassword, setInputPassword] = useState("admin");
+    const [inputEmail, setInputEmail] = useState("teste@teste.com");
+    const [inputPassword, setInputPassword] = useState("teste@123");
 
     //LoginStatus verifica a mensagem quando a senha e o email estão errados
     //Se estiver false a msg é mostrada, se estiver true a msg é escondida
