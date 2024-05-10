@@ -14,28 +14,38 @@ import { getAllEmployess } from "../../services/employees";
 import EmployeeList from "../../components/app/EmployeeList";
 
 function EmployeeCRUD() {
+    const [id, setId] = useState("")
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const setsInput = {
+        setId: setId,
+        setEmail: setEmail,
+        setName: setName,
+        setPassword: setPassword,
+    }
     
     return (
         <View style={styles.container}>
-            <EmployeeList />
 
             <View style={{width: Dimensions.get('window').width, alignItems: "center", borderTopColor: "black", borderTopWidth: 2, paddingTop: 5, gap: 10}}>
                 <View>
                     <View style={styles.inputContainer}>
                         <Text>Id: </Text>
-                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} value={id} onChangeText={setId}/>
                     </View>
                     <View style={styles.inputContainer}>
                         <Text>Name: </Text>
-                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} value={name} onChangeText={setName}/>
                     </View>
                     <View style={styles.inputContainer}>
                         <Text>Email: </Text>
-                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} value={email} onChangeText={setEmail}/>
                     </View>
                     <View style={styles.inputContainer}>
                         <Text>Senha: </Text>
-                        <TextInput style={styles.input} />
+                        <TextInput style={styles.input} value={password} onChangeText={setPassword}/>
                     </View>
                 </View>
 
@@ -56,6 +66,8 @@ function EmployeeCRUD() {
                     <Text>Atualizar: Id, Nome, Email, Senha</Text>
                 </View>
             </View>
+
+            <EmployeeList setsInput={setsInput}/>
         </View>
     );
 }
@@ -63,6 +75,7 @@ function EmployeeCRUD() {
 const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: "center",
         gap: 20,
     },

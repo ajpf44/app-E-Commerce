@@ -8,7 +8,7 @@ import Product from "../screens/Management/Product";
 import RegisterProduct from "../screens/Management/RegisterProduct";
 import SimulateOrder from "../screens/Management/EmployeesOrder";
 import ProductsStack from "./ProductsStack";
-import EmployeeCRUD from "../screens/app/EmployeeCRUD";
+import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -72,7 +72,7 @@ function Tabs() {
                     component={EmployeeCRUD}
                     options={{
                         title: "Funcionários",
-                        headerShown: false,
+                        headerShown: true,
                     }}
                 />
                 {/* Ainda está sendo desenvolvida a screen pedidos */}

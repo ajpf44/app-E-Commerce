@@ -2,7 +2,7 @@
 //Tela para registrar o produto
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from "react-native";
 import { useState } from "react";
-import ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { postProduct } from "../../services/ProductCRUD";
 
 function RegisterProduct() {
@@ -29,12 +29,13 @@ function RegisterProduct() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [16, 9],
       quality: 1,
+      base64: true
     });
                         
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!!result) {
+      setImage(result.assets[0].base64)
     }
   };
 
@@ -43,7 +44,7 @@ function RegisterProduct() {
       <Text style={styles.title}>Registrar Novo Produto</Text>
       <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
         <Text style={styles.buttonText}>Escolher Imagem do Produto</Text>
-        {image && <Image source={{ uri: image }} style={styles.image} />}
+        {image && <Image source={{ uri: `data:image/png;base64, ${image}` }} style={styles.image} />}
       </TouchableOpacity>
       <TextInput
         style={styles.input}
@@ -101,8 +102,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 176,
+    height: 99,
     marginTop: 10,
   },
   input: {

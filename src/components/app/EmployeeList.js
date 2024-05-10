@@ -14,7 +14,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { deleteEmployee, getAllEmployess } from "../../services/employees";
 import { AuthContext } from "../../contexts/AuthContext";
 
-const EmployeeFrame = ({ employee, index }) => {
+const EmployeeFrame = ({ employee, index, setsInput }) => {
 
     return (
         <View style={styles.container}>
@@ -26,7 +26,9 @@ const EmployeeFrame = ({ employee, index }) => {
 
             <Pressable
                 onPress={() => {
-                    console.log("Pressinou a engrenagem");
+                    setsInput.setName(employee.name)
+                    setsInput.setEmail(employee.email)
+                    setsInput.setId(employee.id)
                 }}
                 style={{ marginRight: 10 }}
             >
@@ -58,7 +60,7 @@ const EmployeeFrame = ({ employee, index }) => {
     );
 };
 
-function EmployeeList() {
+function EmployeeList({setsInput}) {
     const [employees, setEmployees] = useState([]);
     const authCtx = useContext(AuthContext);
 
@@ -75,6 +77,7 @@ function EmployeeList() {
                 <EmployeeFrame
                     employee={item}
                     index={index}
+                    setsInput={setsInput}
                 />
             )}
             keyExtractor={(emp) => emp.id}
