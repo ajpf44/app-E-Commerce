@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Picker, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import {Picker} from "@react-native-picker/picker"
 
 const ProductDetailsScreen = ({ route }) => {
   const { product } = route.params;

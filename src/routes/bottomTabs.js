@@ -7,6 +7,7 @@ import HomeManagement from '../screens/Management/HomeManagement';
 import Product from '../screens/Management/Product';
 import RegisterProduct from '../screens/Management/RegisterProduct';
 import SimulateOrder from '../screens/Management/EmployeesOrder';
+import ProductsStack from "./ProductsStack";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -39,14 +40,15 @@ function Tabs() {
                         title: "Gerenciamento",
                     }}
                 />
-                {/* Ainda está sendo desenvolvida a screen produtos */}
-                {/* <Screen 
+                
+                <Screen 
                     name="Product" 
-                    component={Product}
+                    component={ProductsStack}
                     options={{
                         title: "Produtos",
                     }}
-                /> */}
+                />
+
                 <Screen 
                     name="Register" 
                     component={RegisterProduct}
