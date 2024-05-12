@@ -9,11 +9,26 @@ import RegisterProduct from "../screens/Management/RegisterProduct";
 import SimulateOrder from "../screens/Management/EmployeesOrder";
 import ProductsStack from "./ProductsStack";
 import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
+import { useContext, useEffect, useState } from "react";
+import { getAllProducts } from "../services/ProductCRUD";
+import { ProductsContext } from "../contexts/ProductsContext";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
 function Tabs() {
-    
+    const prodCtx = useContext(ProductsContext);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            console.log("ESTÁ RODANDO");
+            prodCtx.setIsFetching(true);
+            const p = await getAllProducts()
+
+            prodCtx.setProducts(p);
+        };
+
+        fetchProducts();
+    }, [prodCtx.contToUpdateFetch]);
 
     return (
         <NavigationContainer initialRouteName="Management">

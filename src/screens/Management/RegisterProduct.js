@@ -1,9 +1,10 @@
 //Matheus Mello 
 //Tela para registrar o produto
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import { postProduct } from "../../services/ProductCRUD";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 function RegisterProduct() {
   const [image, setImage] = useState(null);
@@ -11,6 +12,8 @@ function RegisterProduct() {
   const [productPrice, setProductPrice] = useState('');
   const [productSize, setProductSize] = useState('');
   const [productDescription, setProductDescription] = useState('');
+
+  const {contToUpdateFetch, setContToUpdateFetch} = useContext(ProductsContext);
 
   const sendDatabase = async () => {
     try {
@@ -20,7 +23,8 @@ function RegisterProduct() {
       setProductSize('');
       setProductDescription('');
       setImage(null);
-    } catch (error) {
+      setContToUpdateFetch(contToUpdateFetch+1);
+    } catch (error) { 
       console.log('Erro ao enviar produto:', error);
     }
   };

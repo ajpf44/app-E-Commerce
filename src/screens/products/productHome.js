@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     View,
     FlatList,
@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { getAllProducts } from "../../services/ProductCRUD";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 /*
 const products = [
@@ -31,7 +32,23 @@ const products = [
   // Adicione mais produtos aqui
 ];
 */
-const ProductHome = ({ navigation }) => {
+const ProductHome = ({ navigation}) => {
+    const prodCtx = useContext(ProductsContext);
+
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         prodCtx.setIsFetching(true);
+    //         const p = await getAllProducts();
+    //         prodCtx.setIsFetching(false);
+
+    //         prodCtx.setProducts(p);
+    //     };
+
+    //     fetchProducts();
+    //     console.log('Está sendo executado')
+    // }, []);
+
+    console.log("Tamanho do produto: ", prodCtx.products)
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.item}
@@ -54,28 +71,36 @@ const ProductHome = ({ navigation }) => {
         </TouchableOpacity>
     );
 
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            const p = await getAllProducts();
-
-            setProducts(p);
-        };
-
-        fetchProducts();
-    }, []);
-
     return (
         <View style={styles.container}>
-            {products ? (
+            {prodCtx.isFetchingProducts ? (
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <ActivityIndicator size={60} />
+                </View>
+            ) : prodCtx.products.length ? (
                 <FlatList
-                    data={products}
+                    data={prodCtx.products}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                 />
             ) : (
-                <ActivityIndicator />
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Text style={{ fontSize: 16 }}>
+                        Nenhum produto cadastrado
+                    </Text>
+                </View>
             )}
         </View>
     );
