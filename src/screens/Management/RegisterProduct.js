@@ -27,10 +27,10 @@ function RegisterProduct() {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [16, 9],
-      quality: 0.1,
+      quality: 0.1, //Configurado assim para evitar lentidão do sistema
       base64: true
     });
                         

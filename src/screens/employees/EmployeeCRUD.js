@@ -9,51 +9,94 @@ import {
     ScrollView,
 } from "react-native";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+
 import { getAllEmployess } from "../../services/employees";
 import EmployeeList from "../../components/app/EmployeeList";
+import createAccount from "../../utils/createAccount";
+import { updateEmployee } from "../../services/employees";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function EmployeeCRUD() {
-    const [id, setId] = useState("")
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [id, setId] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const setsInput = {
         setId: setId,
         setEmail: setEmail,
         setName: setName,
         setPassword: setPassword,
-    }
-    
+    };
+
+    const authCtx = useContext(AuthContext);
+
     return (
         <View style={styles.container}>
-
-            <View style={{width: Dimensions.get('window').width, alignItems: "center", borderTopColor: "black", borderTopWidth: 2, paddingTop: 5, gap: 10}}>
+            <View
+                style={{
+                    width: Dimensions.get("window").width,
+                    alignItems: "center",
+                    borderTopColor: "black",
+                    borderTopWidth: 2,
+                    paddingTop: 5,
+                    gap: 10,
+                }}
+            >
                 <View>
                     <View style={styles.inputContainer}>
                         <Text>Id: </Text>
-                        <TextInput style={styles.input} value={id} onChangeText={setId}/>
+                        <TextInput
+                            style={styles.input}
+                            value={id}
+                            onChangeText={setId}
+                        />
                     </View>
                     <View style={styles.inputContainer}>
                         <Text>Name: </Text>
-                        <TextInput style={styles.input} value={name} onChangeText={setName}/>
+                        <TextInput
+                            style={styles.input}
+                            value={name}
+                            onChangeText={setName}
+                        />
                     </View>
                     <View style={styles.inputContainer}>
                         <Text>Email: </Text>
-                        <TextInput style={styles.input} value={email} onChangeText={setEmail}/>
+                        <TextInput
+                            style={styles.input}
+                            value={email}
+                            onChangeText={setEmail}
+                        />
                     </View>
                     <View style={styles.inputContainer}>
                         <Text>Senha: </Text>
-                        <TextInput style={styles.input} value={password} onChangeText={setPassword}/>
+                        <TextInput
+                            style={styles.input}
+                            value={password}
+                            onChangeText={setPassword}
+                        />
                     </View>
                 </View>
 
                 <View style={styles.pressableGroup}>
-                    <Pressable style={styles.Pressable} title="Registrar">
+                    <Pressable
+                        style={styles.Pressable}
+                        title="Registrar"
+                        onPress={() => {
+                            createAccount(email, password, name, null, null, null, authCtx.token);
+                        }}
+                    >
                         <Text style={styles.PressableText}>Registrar</Text>
                     </Pressable>
-                    <Pressable style={styles.Pressable} title="Atualizar">
+                    <Pressable style={styles.Pressable} title="Atualizar" onPress={ async()=>{
+                        const employee = {
+                            name: name,
+                            email: email,
+                            password: password
+                        }
+                        await updateEmployee(id,authCtx.token, employee)
+                    }}>
                         <Text style={styles.PressableText}>Atualizar</Text>
                     </Pressable>
                 </View>
@@ -67,7 +110,7 @@ function EmployeeCRUD() {
                 </View>
             </View>
 
-            <EmployeeList setsInput={setsInput}/>
+            <EmployeeList setsInput={setsInput} />
         </View>
     );
 }

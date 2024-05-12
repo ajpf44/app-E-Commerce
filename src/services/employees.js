@@ -13,7 +13,7 @@ const employee= {
 
 async function registerEmployee(employee, token){
     try {
-        const res = await api.post('/employees.json', employee)
+        const res = await api.post(`/employees.json?auth=${token}`, employee)
         console.log("Registrando usuário, resposta: ", res.status)
     } catch (error) {
         console.log("Registrando usuário, erro: ", error);
@@ -22,11 +22,19 @@ async function registerEmployee(employee, token){
 
 async function deleteEmployee(id, token){
     try{
-        const res = await api.delete(`/employees/${id}.json`)
-
+        const res = await api.delete(`/employees/${id}.json?auth=${token}`)
         console.log(`Deletando o funcionaio de id: ${id}, status: ${res.status}`)
     }catch(err){
         console.log("Error ao deletar funcionário:" + err);
+    }
+}
+
+async function updateEmployee(id, token, employee){
+    try {
+        const res = await api.patch(`/employees/${id}.json?auth=${token}`, employee)
+        console.log("Atualizando usuário, resposta: ", res.status)
+    } catch (error) {
+        console.log("Atualizando usuário, erro: ", error);
     }
 }
 
@@ -52,4 +60,4 @@ async function getAllEmployess(token){
     }
 }
 
-export {registerEmployee, getAllEmployess, deleteEmployee};
+export {registerEmployee, getAllEmployess, deleteEmployee, updateEmployee};

@@ -6,7 +6,8 @@ async function createAccount(
     inputName,
     navigation,
     setCreationStatus,
-    setIsCreating
+    setIsCreating,
+    token
 ) {
     if (inputEmail == "" || inputPassword == "" || inputName == "") {
         setCreationStatus("Campos inválidos");
@@ -31,7 +32,7 @@ async function createAccount(
             email: inputEmail,
             password: hashedPassword,
         };
-        await registerEmployee(employee);
+        await registerEmployee(employee,token);
 
         setCreationStatus("");
         setIsCreating(false);

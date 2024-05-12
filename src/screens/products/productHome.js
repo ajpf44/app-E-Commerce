@@ -6,6 +6,7 @@ import {
     Image,
     TouchableOpacity,
     StyleSheet,
+    ActivityIndicator,
 } from "react-native";
 import { getAllProducts } from "../../services/ProductCRUD";
 
@@ -67,11 +68,15 @@ const ProductHome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={products}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-            />
+            {products ? (
+                <FlatList
+                    data={products}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                />
+            ) : (
+                <ActivityIndicator />
+            )}
         </View>
     );
 };

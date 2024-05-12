@@ -6,6 +6,7 @@ import {
     Dimensions,
     StyleSheet,
     Alert,
+    ActivityIndicator,
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
@@ -15,7 +16,6 @@ import { deleteEmployee, getAllEmployess } from "../../services/employees";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const EmployeeFrame = ({ employee, index, setsInput }) => {
-
     return (
         <View style={styles.container}>
             <Text>{index}</Text>
@@ -26,9 +26,9 @@ const EmployeeFrame = ({ employee, index, setsInput }) => {
 
             <Pressable
                 onPress={() => {
-                    setsInput.setName(employee.name)
-                    setsInput.setEmail(employee.email)
-                    setsInput.setId(employee.id)
+                    setsInput.setName(employee.name);
+                    setsInput.setEmail(employee.email);
+                    setsInput.setId(employee.id);
                 }}
                 style={{ marginRight: 10 }}
             >
@@ -49,10 +49,8 @@ const EmployeeFrame = ({ employee, index, setsInput }) => {
                                 text: "Não",
                             },
                         ]
-
                     );
                 }}
-
             >
                 <FontAwesome name="trash-o" size={24} color="black" />
             </Pressable>
@@ -60,17 +58,24 @@ const EmployeeFrame = ({ employee, index, setsInput }) => {
     );
 };
 
-function EmployeeList({setsInput}) {
+function EmployeeList({ setsInput }) {
     const [employees, setEmployees] = useState([]);
+    const [isFetching, setIsFetching] = useState(true);
     const authCtx = useContext(AuthContext);
 
-
     useEffect(() => {
-        const getEmployess = async () => setEmployees(await getAllEmployess(authCtx.token));
+        const getEmployess = async () => {
+            setEmployees(await getAllEmployess(authCtx.token));
+            setIsFetching(false);
+        };
         getEmployess();
     }, [employees]);
 
-    return (
+    return isFetching ? (
+        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+            <ActivityIndicator size={60} />
+        </View>
+    ) : (
         <FlatList
             data={employees}
             renderItem={({ item, index }) => (

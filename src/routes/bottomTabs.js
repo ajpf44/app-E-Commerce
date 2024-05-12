@@ -13,6 +13,8 @@ import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
 const { Navigator, Screen } = createBottomTabNavigator();
 
 function Tabs() {
+    
+
     return (
         <NavigationContainer initialRouteName="Management">
             <Navigator
