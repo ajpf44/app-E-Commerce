@@ -30,7 +30,7 @@ function RegisterProduct() {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [16, 9],
-      quality: 1,
+      quality: 0.1,
       base64: true
     });
                         
