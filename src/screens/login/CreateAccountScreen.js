@@ -5,61 +5,14 @@ import {
     Text,
     TextInput,
     StyleSheet,
-    Button,
     Dimensions,
     ActivityIndicator,
-    Pressable,
 } from "react-native";
-import {
-    getAllEmployess,
-    registerEmployee,
-} from "../../services/employees";
-import sha256 from "../../utils/cryptography";
 
-async function isEmailAlreadyRegistered(inputEmail){
-    const employees = await getAllEmployess();
-    
-    for( let {email} of employees){
-        if(email == inputEmail) return true;
-    }
 
-    return false;
-}
 
-async function createAccount(
-    inputEmail,
-    inputPassword,
-    inputName,
-    navigation,
-    setCreationStatus,
-    setIsCreating
-) {
-    if (inputEmail == "" || inputPassword == "" || inputName == "") {
-        setCreationStatus("Campos inválidos");
-        return;
-    }
-
-    setIsCreating(true);
-    const isEmailAvailable = !(await isEmailAlreadyRegistered(inputEmail));
-    const hashedPassword = await sha256(inputPassword);
-
-    if (isEmailAvailable) {
-        const employee = {
-            name: inputName,
-            email: inputEmail,
-            password: hashedPassword,
-        };
-
-        await registerEmployee(employee);
-        setCreationStatus("");
-
-        setIsCreating(false)
-        navigation.navigate("HomeLoginScreen");
-    } else {
-        setIsCreating(false)
-        setCreationStatus("Email já cadastrado");
-    }
-}
+import createAccount from "../../utils/createAccount";
+import ButtonPressable from "../../components/ButtonPressable";
 
 function CreateAccountScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");
@@ -98,9 +51,9 @@ function CreateAccountScreen({ navigation }) {
                 />
             </View>
             <View style={styles.buttonsContainer}>
-                <Pressable
-                    style={styles.PressableCreateAccount}
-                    onPress={async () =>
+                {!isCreating && (
+                    <ButtonPressable
+                    pressFunc={() =>
                         createAccount(
                             inputEmail,
                             inputPassword,
@@ -110,17 +63,18 @@ function CreateAccountScreen({ navigation }) {
                             setIsCreating
                         )
                     }
-                >
-                    <Text style={styles.PressableText}>CRIAR CONTA</Text>
-                    
-                </Pressable>
+                    text = "CRIAR CONTA"
+
+
+                />
+                )}
+
+                {isCreating && (
+                    <ActivityIndicator size={35}></ActivityIndicator>
+                )}
             </View>
             <View style={styles.inputContainer}>
-                <Text style={styles.creationStatus}>
-                    {creationStatus}
-                </Text>
-
-                {isCreating?<ActivityIndicator></ActivityIndicator>:<Text> </Text>}
+                <Text style={styles.creationStatus}>{creationStatus}</Text>
             </View>
         </View>
     );
@@ -149,19 +103,8 @@ const styles = StyleSheet.create({
     },
     creationStatus: {
         color: "red",
-        marginBottom: 10
+        marginBottom: 10,
     },
-    PressableCreateAccount:{
-        backgroundColor: "black",
-        paddingVertical: 8,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 2,
-    },
-    PressableText:{
-        color: 'white',
-        fontWeight: "500",
-    }
 });
 
 export default CreateAccountScreen;

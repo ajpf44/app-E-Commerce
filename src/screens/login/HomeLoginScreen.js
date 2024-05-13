@@ -9,28 +9,37 @@ import {
     Dimensions,
     ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-import { getAllEmployess } from "../../services/employees";
-import sha256 from "../../utils/cryptography";
+import { signIn } from "../../services/auth";
+import { AuthContext } from "../../contexts/AuthContext";
 
 //Verifica se o email e senha estão corretos
-async function verifyLogin(inputEmail, inputPassword) {
-    const employees = await getAllEmployess();
+async function startSession(
+    inputEmail,
+    inputPassword,
+    setToken,
+    setLoginStatus,
+    setIsVerifyingLogin
+) {
+    setIsVerifyingLogin(true);
 
-    const hashedInputPassword = await sha256(inputPassword);
+    const idToken = await signIn(inputEmail, inputPassword);
+    setToken(idToken);
 
-    const employee = employees.find(
-        (e) =>
-            e.email === inputEmail && e.password == hashedInputPassword
-    );
+    if (!!idToken) {
+        setLoginStatus(true);
+    } else {
+        setLoginStatus(false);
+    }
 
-    return !!employee;
+    setIsVerifyingLogin(false);
 }
 
 function HomeLoginScreen({ navigation }) {
-    const [inputEmail, setInputEmail] = useState("");
-    const [inputPassword, setInputPassword] = useState("");
+    const [inputEmail, setInputEmail] = useState("teste@teste.com");
+    const [inputPassword, setInputPassword] = useState("teste@123");
+    const authCtx = useContext(AuthContext);
 
     //LoginStatus verifica a mensagem quando a senha e o email estão errados
     //Se estiver false a msg é mostrada, se estiver true a msg é escondida
@@ -43,6 +52,7 @@ function HomeLoginScreen({ navigation }) {
             <View style={styles.inputContainer}>
                 <Text>Email:</Text>
                 <TextInput
+                    value={inputEmail}
                     onChangeText={setInputEmail}
                     style={styles.textInput}
                 />
@@ -50,31 +60,29 @@ function HomeLoginScreen({ navigation }) {
             <View style={styles.inputContainer}>
                 <Text>Senha: </Text>
                 <TextInput
+                    value={inputPassword}
                     onChangeText={setInputPassword}
                     style={styles.textInput}
                 />
             </View>
             <View style={styles.buttonsContainer}>
-                <Button
-                    title="Logar"
-                    color="black"
-                    onPress={async () => {
-                        setIsVerifyingLogin(true);
-                        const sucessfullLogin = await verifyLogin(
-                            inputEmail,
-                            inputPassword
-                        );
-
-                        if (sucessfullLogin) {
-                            setLoginStatus(true);
-                            setIsVerifyingLogin(false);
-                            navigation.navigate("app");
-                        } else {
-                            setLoginStatus(false);
-                            setIsVerifyingLogin(false);
-                        }
-                    }}
-                />
+                {isVerifyingLogin ? (
+                    <ActivityIndicator />
+                ) : (
+                    <Button
+                        title="Logar"
+                        color="black"
+                        onPress={async () => {
+                            await startSession(
+                                inputEmail,
+                                inputPassword,
+                                authCtx.setToken,
+                                setLoginStatus,
+                                setIsVerifyingLogin
+                            );
+                        }}
+                    />
+                )}
                 <Button
                     title="Criar Conta"
                     color="black"
@@ -82,14 +90,7 @@ function HomeLoginScreen({ navigation }) {
                 />
             </View>
             <View style={styles.inputContainer}>
-                <Text style={styles.wrongLoginStatus}>
-                    {loginStatus ? "" : "Email e/ou Senha errados"}
-                </Text>
-                {isVerifyingLogin ? (
-                    <ActivityIndicator></ActivityIndicator>
-                ) : (
-                    <Text> </Text>
-                )}
+                <Text style={styles.loginStatus}>{loginStatus}</Text>
             </View>
         </View>
     );
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
         gap: 10,
         marginTop: 10,
     },
-    wrongLoginStatus: {
+    loginStatus: {
         color: "red",
         marginBottom: 10,
     },
