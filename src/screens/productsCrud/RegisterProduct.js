@@ -8,6 +8,7 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
+    Keyboard,
 } from "react-native";
 import { useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -24,6 +25,7 @@ function RegisterProduct() {
     const [productPrice, setProductPrice] = useState("");
     const [productSize, setProductSize] = useState("");
     const [productDescription, setProductDescription] = useState("");
+    const [productInventory, setProductInventory] = useState("");
 
     const [isCreating, setIsCreating] = useState(false);
     const [registerStatus, setRegisterStatus] = useState();
@@ -41,18 +43,22 @@ function RegisterProduct() {
                 price: productPrice,
                 size: productSize,
                 description: productDescription,
+                inventory: productInventory,
                 image: image,
             });
             setProductName("");
             setProductPrice("");
             setProductSize("");
             setProductDescription("");
+            setProductInventory("");
             setImage(null);
 
             refreshProducts(prodCtx);
             setIsCreating(false);
             setRegisterStatus(true);
             setIncrementToShow(incrementToShow + 1);
+
+            Keyboard.dismiss();
         } catch (error) {
             console.log("Erro ao enviar produto:", error);
             setRegisterStatus(false);
@@ -102,6 +108,12 @@ function RegisterProduct() {
             />
             <TextInput
                 style={styles.input}
+                placeholder="Insira o Estoque do Produto"
+                value={productInventory}
+                onChangeText={setProductInventory}
+            />
+            <TextInput
+                style={styles.input}
                 placeholder="Insira a Descrição do Produto"
                 value={productDescription}
                 onChangeText={setProductDescription}
@@ -116,7 +128,7 @@ function RegisterProduct() {
                 ))}
             </Picker>
             {isCreating ? (
-                <ActivityIndicator size={40}/>
+                <ActivityIndicator size={40} />
             ) : (
                 <TouchableOpacity
                     style={styles.buttonRegister}

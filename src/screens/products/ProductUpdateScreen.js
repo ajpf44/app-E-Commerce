@@ -29,6 +29,7 @@ const ProductUpdateScreen = ({ route, navigation }) => {
     const [productName, setProductName] = useState(product.name);
     const [productPrice, setProductPrice] = useState(product.price);
     const [productSize, setProductSize] = useState(product.size);
+    const [productInventory, setProductInventory] = useState(product.inventory);
     const [productDescription, setProductDescription] = useState(
         product.description
     );
@@ -78,6 +79,12 @@ const ProductUpdateScreen = ({ route, navigation }) => {
             />
             <TextInput
                 style={styles.input}
+                placeholder="Insira o Estoque do Produto"
+                value={productInventory}
+                onChangeText={setProductInventory}
+            />
+            <TextInput
+                style={styles.input}
                 placeholder="Insira a Descrição do Produto"
                 value={productDescription}
                 onChangeText={setProductDescription}
@@ -103,6 +110,7 @@ const ProductUpdateScreen = ({ route, navigation }) => {
                                 name: productName,
                                 price: productPrice,
                                 size: productSize,
+                                inventory: productInventory,
                                 description: productDescription,
                                 image: image,
                             });
@@ -129,7 +137,7 @@ const ProductUpdateScreen = ({ route, navigation }) => {
                                                 refreshProducts(prodCtx);
                                                 setIsFetching(false)
                                                 navigation.navigate(
-                                                    "ProductHome"
+                                                    "ProductsHome"
                                                 );
                                             },
                                         },
@@ -192,7 +200,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         width: Dimensions.get("window").width * 0.7,
         marginTop: 20,
-        justifyContent: "space-around",
+        justifyContent: "center",
     },
     imageButton: {
         width: "80%",
@@ -227,7 +235,6 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     onPressContainer: {
-        flex: 1,
         width: "100%",
         alignItems: "center",
     },

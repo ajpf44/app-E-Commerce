@@ -31,6 +31,7 @@ const ProductHome = ({ navigation }) => {
             <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.name}</Text>
                 <Text style={styles.price}>Preço: R$ {item.price}</Text>
+                <Text style={styles.inventory}>Estoque: {item.inventory}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -97,6 +98,11 @@ const styles = StyleSheet.create({
         color: "#666",
         marginTop: 2, // Espaçamento entre o nome e o preço
     },
+    inventory: {
+        fontSize: 14,
+        color: "#666",
+        marginTop: 2
+    }
 });
 
 export default ProductHome;
