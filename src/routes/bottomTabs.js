@@ -20,7 +20,6 @@ function Tabs() {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            console.log("ESTÁ RODANDO");
             prodCtx.setIsFetching(true);
             const p = await getAllProducts();
 
@@ -72,6 +71,7 @@ function Tabs() {
                     component={ProductsStack}
                     options={{
                         title: "Produtos",
+                        headerShown: false
                     }}
                 />
 

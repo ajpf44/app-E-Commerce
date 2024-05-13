@@ -20,7 +20,7 @@ export const postProduct = async (productData) => {
 
 export const updateProduct = async (productId, updatedData) => {
     try {
-        const response = await api.put((`/products/${productId}.json`, updatedData))
+        const response = await api.patch(`/products/${productId}.json`, updatedData)
         console.log("Atualizando produto: ", response.status)
     } catch(err) {
         console.log("ERRO atualizando produto: ", err)

@@ -44,7 +44,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
             <View style={styles.iconsContainer}>
                 <Pressable
                     onPress={() => {
-                        console.log("Pressinou a engrenagem");
+                        navigation.navigate("ProductUpdateScreen", {product: product});
                     }}
                 >
                     <FontAwesome name="gear" size={iconsSize} color="black" />

@@ -13,6 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import { postProduct } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import refreshProducts from "../../utils/refreshProducts";
+import { Picker } from "@react-native-picker/picker";
 
 function RegisterProduct() {
     const [image, setImage] = useState(null);
@@ -21,8 +22,7 @@ function RegisterProduct() {
     const [productSize, setProductSize] = useState("");
     const [productDescription, setProductDescription] = useState("");
 
-    const prodCtx =
-        useContext(ProductsContext);
+    const prodCtx = useContext(ProductsContext);
 
     const sendDatabase = async () => {
         try {
@@ -38,7 +38,7 @@ function RegisterProduct() {
             setProductSize("");
             setProductDescription("");
             setImage(null);
-            refreshProducts(prodCtx)
+            refreshProducts(prodCtx);
         } catch (error) {
             console.log("Erro ao enviar produto:", error);
         }
@@ -86,16 +86,19 @@ function RegisterProduct() {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Insira o Tamanho do Produto"
-                value={productSize}
-                onChangeText={setProductSize}
-            />
-            <TextInput
-                style={styles.input}
                 placeholder="Insira a Descrição do Produto"
                 value={productDescription}
                 onChangeText={setProductDescription}
             />
+            <Picker
+                selectedValue={productSize}
+                onValueChange={setProductSize}
+                style={styles.picker}
+            >
+                {["M", "P", "G", "GG"].map((size) => (
+                    <Picker.Item key={size} label={size} value={size} />
+                ))}
+            </Picker>
             <TouchableOpacity
                 style={styles.buttonRegister}
                 onPress={sendDatabase}
@@ -150,6 +153,11 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "#fff",
+    },
+    picker: {
+        height: 50,
+        width: "80%",
+        marginBottom: 10,
     },
 });
 
