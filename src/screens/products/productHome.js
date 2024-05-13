@@ -35,20 +35,6 @@ const products = [
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
 
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         prodCtx.setIsFetching(true);
-    //         const p = await getAllProducts();
-    //         prodCtx.setIsFetching(false);
-
-    //         prodCtx.setProducts(p);
-    //     };
-
-    //     fetchProducts();
-    //     console.log('Está sendo executado')
-    // }, []);
-
-    console.log("Tamanho do produto: ", prodCtx.products);
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.item}

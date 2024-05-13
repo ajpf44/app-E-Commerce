@@ -5,16 +5,14 @@ import {
     Text,
     TextInput,
     StyleSheet,
-    Button,
     Dimensions,
     ActivityIndicator,
-    Pressable,
 } from "react-native";
-import { getAllEmployess, registerEmployee } from "../../services/employees";
-import sha256 from "../../utils/cryptography";
-import { signUp } from "../../services/auth";
+
+
+
 import createAccount from "../../utils/createAccount";
-import ButtonPressable from "../../components/app/ButtonPressable";
+import ButtonPressable from "../../components/ButtonPressable";
 
 function CreateAccountScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");

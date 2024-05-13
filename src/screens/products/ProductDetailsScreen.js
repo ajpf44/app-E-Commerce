@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, Text, Image, StyleSheet, Pressable, Dimensions, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-const ProductDetailsScreen = ({ route }) => {
-    const { product } = route.params;
+import { FontAwesome } from "@expo/vector-icons";
+
+import {deleteProduct} from "../../services/products"
+import { ProductsContext } from "../../contexts/ProductsContext";
+import refreshProducts from "../../utils/refreshProducts";
+
+const ProductDetailsScreen = ({ route, navigation }) => {
+    const { product } = route.params; //Produto que foi selecionado
     const [selectedSize, setSelectedSize] = useState(product.size);
+
+    const iconsSize = 40;
+
+    const prodCtx = useContext(ProductsContext);
 
     return (
         <View style={styles.container}>
@@ -31,7 +41,43 @@ const ProductDetailsScreen = ({ route }) => {
                     <Picker.Item key={size} label={size} value={size} />
                 ))}
             </Picker>
+            <View style={styles.iconsContainer}>
+                <Pressable
+                    onPress={() => {
+                        console.log("Pressinou a engrenagem");
+                    }}
+                >
+                    <FontAwesome name="gear" size={iconsSize} color="black" />
+                </Pressable>
 
+                <Pressable
+                    onPress={() => {
+                        Alert.alert(
+                            "Confirmação",
+                            `Realmente deseja excluir ${product.name}?`,
+                            [
+                                {
+                                    text: "Sim",
+                                    onPress: async() => {
+                                        await deleteProduct(product.id)
+                                        navigation.navigate("ProductHome")
+                                        refreshProducts(prodCtx);
+                                    },
+                                },
+                                {
+                                    text: "Não",
+                                },
+                            ]
+                        );
+                    }}
+                >
+                    <FontAwesome
+                        name="trash-o"
+                        size={iconsSize}
+                        color="black"
+                    />
+                </Pressable>
+            </View>
         </View>
     );
 };
@@ -68,6 +114,13 @@ const styles = StyleSheet.create({
         height: 50,
         width: "100%",
     },
+    iconsContainer: {
+        flexDirection: "row",
+        alignSelf: "center",
+        width: Dimensions.get("window").width * 0.7,
+        marginTop: 20,
+        justifyContent: "space-around"
+    }
 });
 
 export default ProductDetailsScreen;

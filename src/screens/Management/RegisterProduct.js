@@ -12,6 +12,7 @@ import { useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { postProduct } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
+import refreshProducts from "../../utils/refreshProducts";
 
 function RegisterProduct() {
     const [image, setImage] = useState(null);
@@ -20,7 +21,7 @@ function RegisterProduct() {
     const [productSize, setProductSize] = useState("");
     const [productDescription, setProductDescription] = useState("");
 
-    const { contToUpdateFetch, setContToUpdateFetch } =
+    const prodCtx =
         useContext(ProductsContext);
 
     const sendDatabase = async () => {
@@ -37,7 +38,7 @@ function RegisterProduct() {
             setProductSize("");
             setProductDescription("");
             setImage(null);
-            setContToUpdateFetch(contToUpdateFetch + 1);
+            refreshProducts(prodCtx)
         } catch (error) {
             console.log("Erro ao enviar produto:", error);
         }
