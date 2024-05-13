@@ -27,7 +27,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
                 style={styles.image}
             />
             <Text style={styles.name}>{product.name}</Text>
-            <Text style={styles.price}>Preço: {product.price}</Text>
+            <Text style={styles.price}>Preço: R$ {product.price}</Text>
             <Text style={styles.description}>
                 Descrição: {product.description}
             </Text>

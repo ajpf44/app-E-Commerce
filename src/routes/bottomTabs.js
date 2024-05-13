@@ -3,13 +3,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import HomeManagement from "../screens/Management/HomeManagement";
-import Product from "../screens/Management/Product";
-import RegisterProduct from "../screens/Management/RegisterProduct";
-import SimulateOrder from "../screens/Management/EmployeesOrder";
+import HomeApp from "../screens/productsCrud/HomeApp";
+import RegisterProduct from "../screens/productsCrud/RegisterProduct";
 import ProductsStack from "./ProductsStack";
 import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { getAllProducts } from "../services/products";
 import { ProductsContext } from "../contexts/ProductsContext";
 
@@ -59,7 +57,7 @@ function Tabs() {
             >
                 <Screen
                     name="Management"
-                    component={HomeManagement}
+                    component={HomeApp}
                     options={{
                         headerShown: false,
                         title: "Gerenciamento",

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
     View,
     FlatList,
@@ -8,7 +8,6 @@ import {
     StyleSheet,
     ActivityIndicator,
 } from "react-native";
-import { getAllProducts } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
 /*

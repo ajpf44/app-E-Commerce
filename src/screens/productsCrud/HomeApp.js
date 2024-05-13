@@ -4,7 +4,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; // Importe o pacote de ícones
 
-function HomeManagement({ navigation }) {
+function HomeApp({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeManagement;
+export default HomeApp;

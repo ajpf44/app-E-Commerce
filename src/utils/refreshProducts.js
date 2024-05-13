@@ -1,3 +1,3 @@
-export default refreshProducts = (prodCtx) =>
-    prodCtx.setContToUpdateFetch(prodCtx.contToUpdateFetch + 1);
+export default refreshProducts = ({contToUpdateFetch,setContToUpdateFetch}) =>
+    setContToUpdateFetch(contToUpdateFetch + 1);
 
