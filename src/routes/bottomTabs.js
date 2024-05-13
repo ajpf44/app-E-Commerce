@@ -10,7 +10,7 @@ import SimulateOrder from "../screens/Management/EmployeesOrder";
 import ProductsStack from "./ProductsStack";
 import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
 import { useContext, useEffect, useState } from "react";
-import { getAllProducts } from "../services/ProductCRUD";
+import { getAllProducts } from "../services/products";
 import { ProductsContext } from "../contexts/ProductsContext";
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -22,7 +22,7 @@ function Tabs() {
         const fetchProducts = async () => {
             console.log("ESTÁ RODANDO");
             prodCtx.setIsFetching(true);
-            const p = await getAllProducts()
+            const p = await getAllProducts();
 
             prodCtx.setProducts(p);
         };

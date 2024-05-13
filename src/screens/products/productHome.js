@@ -8,7 +8,7 @@ import {
     StyleSheet,
     ActivityIndicator,
 } from "react-native";
-import { getAllProducts } from "../../services/ProductCRUD";
+import { getAllProducts } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
 /*
@@ -32,7 +32,7 @@ const products = [
   // Adicione mais produtos aqui
 ];
 */
-const ProductHome = ({ navigation}) => {
+const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
 
     // useEffect(() => {
@@ -48,7 +48,7 @@ const ProductHome = ({ navigation}) => {
     //     console.log('Está sendo executado')
     // }, []);
 
-    console.log("Tamanho do produto: ", prodCtx.products)
+    console.log("Tamanho do produto: ", prodCtx.products);
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.item}
