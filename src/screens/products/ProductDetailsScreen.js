@@ -1,10 +1,19 @@
 import React, { useContext, useState } from "react";
-import { View, Text, Image, StyleSheet, Pressable, Dimensions, Alert } from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    Pressable,
+    Dimensions,
+    Alert,
+    ActivityIndicator,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 import { FontAwesome } from "@expo/vector-icons";
 
-import {deleteProduct} from "../../services/products"
+import { deleteProduct } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import refreshProducts from "../../utils/refreshProducts";
 
@@ -12,6 +21,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
     const { product } = route.params; //Produto que foi selecionado
     const [selectedSize, setSelectedSize] = useState(product.size);
 
+    const [isDeleting, setIsDeleting] = useState(false);
     const iconsSize = 40;
 
     const prodCtx = useContext(ProductsContext);
@@ -41,43 +51,55 @@ const ProductDetailsScreen = ({ route, navigation }) => {
                     <Picker.Item key={size} label={size} value={size} />
                 ))}
             </Picker>
-            <View style={styles.iconsContainer}>
-                <Pressable
-                    onPress={() => {
-                        navigation.navigate("ProductUpdateScreen", {product: product});
-                    }}
-                >
-                    <FontAwesome name="gear" size={iconsSize} color="black" />
-                </Pressable>
+            {isDeleting ? (
+                <ActivityIndicator size={60} />
+            ) : (
+                <View style={styles.iconsContainer}>
+                    <Pressable
+                        onPress={() => {
+                            navigation.navigate("ProductUpdateScreen", {
+                                product: product,
+                            });
+                        }}
+                    >
+                        <FontAwesome
+                            name="gear"
+                            size={iconsSize}
+                            color="black"
+                        />
+                    </Pressable>
 
-                <Pressable
-                    onPress={() => {
-                        Alert.alert(
-                            "Confirmação",
-                            `Realmente deseja excluir ${product.name}?`,
-                            [
-                                {
-                                    text: "Sim",
-                                    onPress: async() => {
-                                        await deleteProduct(product.id)
-                                        navigation.navigate("ProductHome")
-                                        refreshProducts(prodCtx);
+                    <Pressable
+                        onPress={() => {
+                            setIsDeleting(true);
+                            Alert.alert(
+                                "Confirmação",
+                                `Realmente deseja excluir ${product.name}?`,
+                                [
+                                    {
+                                        text: "Sim",
+                                        onPress: async () => {
+                                            await deleteProduct(product.id);
+                                            navigation.navigate("ProductsHome");
+                                            refreshProducts(prodCtx);
+                                        },
                                     },
-                                },
-                                {
-                                    text: "Não",
-                                },
-                            ]
-                        );
-                    }}
-                >
-                    <FontAwesome
-                        name="trash-o"
-                        size={iconsSize}
-                        color="black"
-                    />
-                </Pressable>
-            </View>
+                                    {
+                                        text: "Não",
+                                    },
+                                ]
+                            );
+                            setIsDeleting(false);
+                        }}
+                    >
+                        <FontAwesome
+                            name="trash-o"
+                            size={iconsSize}
+                            color="black"
+                        />
+                    </Pressable>
+                </View>
+            )}
         </View>
     );
 };
@@ -119,8 +141,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         width: Dimensions.get("window").width * 0.7,
         marginTop: 20,
-        justifyContent: "space-around"
-    }
+        justifyContent: "space-around",
+    },
 });
 
 export default ProductDetailsScreen;

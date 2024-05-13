@@ -10,27 +10,6 @@ import {
 } from "react-native";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
-/*
-const products = [
-  {
-    id: '1',
-    name: 'Produto 1',
-    price: 'R$10,00',
-    description: 'Descrição do produto 1',
-    image: 'https://via.placeholder.com/150',
-    sizes: ['P', 'M', 'G'],
-  },
-  {
-    id: '2',
-    name: 'Produto 2',
-    price: 'R$20,00',
-    description: 'Descrição do produto 2',
-    image: 'https://via.placeholder.com/150',
-    sizes: ['P', 'M', 'G', 'GG'],
-  },
-  // Adicione mais produtos aqui
-];
-*/
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
 

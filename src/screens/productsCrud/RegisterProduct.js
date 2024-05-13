@@ -7,6 +7,7 @@ import {
     TextInput,
     StyleSheet,
     Image,
+    ActivityIndicator,
 } from "react-native";
 import { useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -15,6 +16,8 @@ import { ProductsContext } from "../../contexts/ProductsContext";
 import refreshProducts from "../../utils/refreshProducts";
 import { Picker } from "@react-native-picker/picker";
 
+import FloatingWindow from "../../components/app/FloatingConfirmationWIndow";
+
 function RegisterProduct() {
     const [image, setImage] = useState(null);
     const [productName, setProductName] = useState("");
@@ -22,10 +25,17 @@ function RegisterProduct() {
     const [productSize, setProductSize] = useState("");
     const [productDescription, setProductDescription] = useState("");
 
+    const [isCreating, setIsCreating] = useState(false);
+    const [registerStatus, setRegisterStatus] = useState();
+    const [incrementToShow, setIncrementToShow] = useState(0);
+
     const prodCtx = useContext(ProductsContext);
 
     const sendDatabase = async () => {
         try {
+            if (productName == "") throw "Null productName";
+
+            setIsCreating(true);
             await postProduct({
                 name: productName,
                 price: productPrice,
@@ -38,9 +48,15 @@ function RegisterProduct() {
             setProductSize("");
             setProductDescription("");
             setImage(null);
+
             refreshProducts(prodCtx);
+            setIsCreating(false);
+            setRegisterStatus(true);
+            setIncrementToShow(incrementToShow + 1);
         } catch (error) {
             console.log("Erro ao enviar produto:", error);
+            setRegisterStatus(false);
+            setIncrementToShow(incrementToShow + 1);
         }
     };
 
@@ -99,12 +115,25 @@ function RegisterProduct() {
                     <Picker.Item key={size} label={size} value={size} />
                 ))}
             </Picker>
-            <TouchableOpacity
-                style={styles.buttonRegister}
-                onPress={sendDatabase}
-            >
-                <Text style={styles.buttonText}>Registrar Produto</Text>
-            </TouchableOpacity>
+            {isCreating ? (
+                <ActivityIndicator size={40}/>
+            ) : (
+                <TouchableOpacity
+                    style={styles.buttonRegister}
+                    onPress={sendDatabase}
+                >
+                    <Text style={styles.buttonText}>Registrar Produto</Text>
+                </TouchableOpacity>
+            )}
+
+            {registerStatus != null ? (
+                <FloatingWindow
+                    status={registerStatus}
+                    incrementToShow={incrementToShow}
+                />
+            ) : (
+                <></>
+            )}
         </View>
     );
 }
