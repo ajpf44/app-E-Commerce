@@ -1,4 +1,6 @@
-import { getAllEmployess } from "../services/employees";
+import { signUp } from "../services/auth";
+import { getAllEmployess, registerEmployee } from "../services/employees";
+import sha256 from "./cryptography";
 
 async function createAccount(
     inputEmail,
