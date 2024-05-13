@@ -31,6 +31,7 @@ const ProductDetailsScreen = ({ route }) => {
                     <Picker.Item key={size} label={size} value={size} />
                 ))}
             </Picker>
+
         </View>
     );
 };

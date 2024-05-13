@@ -14,6 +14,7 @@ import { getAllEmployess, registerEmployee } from "../../services/employees";
 import sha256 from "../../utils/cryptography";
 import { signUp } from "../../services/auth";
 import createAccount from "../../utils/createAccount";
+import ButtonPressable from "../../components/app/ButtonPressable";
 
 function CreateAccountScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");
@@ -53,21 +54,21 @@ function CreateAccountScreen({ navigation }) {
             </View>
             <View style={styles.buttonsContainer}>
                 {!isCreating && (
-                    <Pressable
-                        style={styles.PressableCreateAccount}
-                        onPress={async () =>
-                            createAccount(
-                                inputEmail,
-                                inputPassword,
-                                inputName,
-                                navigation,
-                                setCreationStatus,
-                                setIsCreating
-                            )
-                        }
-                    >
-                        <Text style={styles.PressableText}>CRIAR CONTA</Text>
-                    </Pressable>
+                    <ButtonPressable
+                    pressFunc={() =>
+                        createAccount(
+                            inputEmail,
+                            inputPassword,
+                            inputName,
+                            navigation,
+                            setCreationStatus,
+                            setIsCreating
+                        )
+                    }
+                    text = "CRIAR CONTA"
+
+
+                />
                 )}
 
                 {isCreating && (
@@ -105,17 +106,6 @@ const styles = StyleSheet.create({
     creationStatus: {
         color: "red",
         marginBottom: 10,
-    },
-    PressableCreateAccount: {
-        backgroundColor: "black",
-        paddingVertical: 8,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 2,
-    },
-    PressableText: {
-        color: "white",
-        fontWeight: "500",
     },
 });
 
