@@ -68,7 +68,7 @@ function RegisterProduct() {
             quality: 0.1, //Configurado assim para evitar lentidão do sistema
             base64: true,
         });
-
+        if (result.canceled) return;
         if (!!result) {
             setImage(result.assets[0].base64);
         }
