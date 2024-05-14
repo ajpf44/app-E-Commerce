@@ -3,10 +3,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // Importando Ionicons
-import RegisterProduct from "../screens/Management/RegisterProduct";
+import RegisterProduct from "../screens/products/RegisterProduct";
 import ProductsStack from "./ProductsStack";
 import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect} from "react";
 import { getAllProducts } from "../services/products";
 import { ProductsContext } from "../contexts/ProductsContext";
 import HomeStack from "./HomeStack";
