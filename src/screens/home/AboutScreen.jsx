@@ -158,9 +158,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10
   },
-  githubIcon: {
-    marginLeft: 5 // para dar espaço entre os ícones
-  },
+
   linksContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
