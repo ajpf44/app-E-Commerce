@@ -36,7 +36,7 @@ const ProductHome = ({ navigation }) => {
             />
             <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.price}>Preço: R$ {item.price}</Text>
+                <Text style={styles.price}>Preço: {item.price}</Text>
                 <Text style={styles.inventory}>Estoque: {item.inventory}</Text>
             </View>
         </TouchableOpacity>
