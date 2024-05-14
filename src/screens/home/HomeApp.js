@@ -11,11 +11,15 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { AntDesign} from "@expo/vector-icons";
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+import { NetInfoContext } from "../../contexts/NetInfoContext";
+import { useContext } from "react";
 const logoIMG = require("../../../assets/logo-inverted-cropped.jpg");
 
 function HomeApp({ navigation }) {
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow isConnected={useContext(NetInfoContext).isConnected}/>
             <StatusBar style="inverted" />
             <View style={styles.header}>
                 <Image source={logoIMG} style={styles.logoHeader} />

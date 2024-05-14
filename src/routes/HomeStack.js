@@ -3,6 +3,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeApp from "../screens/home/HomeApp";
 import AboutScreen from "../screens/home/AboutScreen";
+import NetworkStatusWindow from "../components/NetworkStatusWindow";
+import { useContext } from "react";
+import { NetInfoContext } from "../contexts/NetInfoContext";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
