@@ -1,18 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import LoginStack from "./src/routes/LoginStack.routes";
-import Tabs from "./src/routes/bottomTabs";
+import { StyleSheet} from "react-native";
 import Routes from "./src/routes";
 import { AuthContextProvider } from "./src/contexts/AuthContext";
+import {
+    NetInfoContextProvider,
+} from "./src/contexts/NetInfoContext";
+
+
 export default function App() {
     console.log("App running");
 
     return (
         // <LoginStack></LoginStack>
         // <HomeManagement />
-        <AuthContextProvider>
-            <Routes />
-        </AuthContextProvider>
+        <NetInfoContextProvider>
+            <AuthContextProvider>
+                <Routes />
+            </AuthContextProvider>
+        </NetInfoContextProvider>
         // <Tabs />
     );
 }
