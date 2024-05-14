@@ -9,7 +9,8 @@ import {
     Dimensions,
     ActivityIndicator,
 } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { signIn } from "../../services/auth";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -29,6 +30,7 @@ async function startSession(
 
     if (!!idToken) {
         setLoginStatus(true);
+        storageTokenInCache(idToken);
     } else {
         setLoginStatus(false);
     }
@@ -36,10 +38,36 @@ async function startSession(
     setIsVerifyingLogin(false);
 }
 
+async function storageTokenInCache(token) {
+    try {
+        await AsyncStorage.setItem("tokenKey", token);
+    } catch (e) {
+        console.log("Error storing token: "  + e)
+    }
+}
+
+async function getTokenInCache(){
+    try {
+        const token = await AsyncStorage.getItem('tokenKey');
+
+        return token
+      } catch (e) {
+        console.log("Error getting token: " + e)
+      }
+}
 function HomeLoginScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("teste@teste.com");
     const [inputPassword, setInputPassword] = useState("teste@123");
     const authCtx = useContext(AuthContext);
+
+    useEffect(()=>{
+        const getToken = async () =>{
+            const token = await getTokenInCache()
+            authCtx.setToken(token);
+        }
+
+        getToken();
+    },[])
 
     //LoginStatus verifica a mensagem quando a senha e o email estão errados
     //Se estiver false a msg é mostrada, se estiver true a msg é escondida
