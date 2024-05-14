@@ -17,8 +17,6 @@ const ProductHome = ({ navigation }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [productsToDisplay, setProductsToDisplay] = useState([]);
 
-    console.log(prodCtx.isFetching);
-
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.item}
