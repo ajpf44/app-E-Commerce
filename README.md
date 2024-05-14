@@ -3,8 +3,10 @@
 ## Versões:
 
 -   Node v20.13.0
--   Npm  v10.5.2
--   Expo v50.0.17
+-   Npm v10.5.2
+-   Expo v51.0.5
+-   React v18.2.0
+-   React Native v0.74.1
 
 ## Informações:
 
@@ -14,6 +16,11 @@ Este projeto é criação de um  aplicativo para um gerenciamento de um E-commer
 
 -   Tela de Login, com validação 
 -   Tela de Criação de Contas, com validação e criptografia
+-   Tela de informações da equipe 
+-   Tela de exibição de produtos
+-   Tela de gerenciamento de produtos
+-   Mecanismo para verificar a conexão com a internet
+-   Mecanismo para guardar o token de login em cache
 
 ### Antes de rodar
 - Verifique a versão do Node e do Npm
@@ -25,15 +32,7 @@ npm -v
 ```bash
 npm install
 ```
-- Depois, instale manualmente as depedências do npx
+- Depois, instale manualmente as depedências do expo
 ```bash
-npx expo install react-native-screens react-native-safe-area-context
+npx expo install --fix
 ```
-
-### Dependencias utilizadas até então utilizadas
-- npm install axios
-- npm install @react-navigation/native @react-navigation/native-stack
-- npx expo install react-native-screens react-native-safe-area-context
-
-
-- npx expo install expo-crypto (Responsável pela Cripografia)
