@@ -15,7 +15,10 @@ function ProductsStack() {
                 component={ProductsHome}
             />
             <Screen name="ProductDetails" component={ProductDetailsScreen} />
-            <Screen name="ProductUpdateScreen" component={ProductUpdateScreen} />
+            <Screen 
+                name="ProductUpdateScreen" 
+                component={ProductUpdateScreen} 
+            />
         </Navigator>
     );
 }

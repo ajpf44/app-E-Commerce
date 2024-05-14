@@ -1,8 +1,8 @@
-// Matheus Mello
+// Matheus Mello / Arthur Baltar
 //Pagina de Rotas bottomTabs
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons"; // Importando Ionicons
 import HomeManagement from "../screens/Management/HomeManagement";
 import Product from "../screens/Management/Product";
 import RegisterProduct from "../screens/Management/RegisterProduct";
@@ -12,6 +12,7 @@ import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
 import { useContext, useEffect, useState } from "react";
 import { getAllProducts } from "../services/products";
 import { ProductsContext } from "../contexts/ProductsContext";
+import HomeApp from "../screens/productsCrud/HomeApp";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -36,13 +37,15 @@ function Tabs() {
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
                         if (route.name === "Management") {
-                            iconName = focused ? "home" : "home-outline";
+                            iconName = focused? "home" : "home-outline";
                         } else if (route.name === "Register") {
-                            iconName = focused
-                                ? "add-circle"
-                                : "add-circle-outline";
+                            iconName = focused? "add-circle" : "add-circle-outline";
                         } else if (route.name === "Order") {
-                            iconName = focused ? "cart" : "cart-outline";
+                            iconName = focused? "cart" : "cart-outline";
+                        } else if (route.name === "Employees") {
+                            iconName = focused? "person" : "person-outline"; // Ícone para Funcionários
+                        } else if (route.name === "Product") {
+                            iconName = focused? "list" : "list-outline"; // Ícone para Produtos
                         }
                         return (
                             <Ionicons
@@ -59,7 +62,7 @@ function Tabs() {
             >
                 <Screen
                     name="Management"
-                    component={HomeManagement}
+                    component={HomeApp}
                     options={{
                         headerShown: false,
                         title: "Gerenciamento",
@@ -92,14 +95,7 @@ function Tabs() {
                         headerShown: true,
                     }}
                 />
-                {/* Ainda está sendo desenvolvida a screen pedidos */}
-                {/* <Screen 
-                    name="Order" 
-                    component={SimulateOrder}
-                    options={{
-                        title: "Pedido",
-                    }}
-                /> */}
+               
             </Navigator>
         </NavigationContainer>
     );

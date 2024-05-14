@@ -1,6 +1,5 @@
 import LoginStack from "./LoginStack.routes";
 import Tabs from "./bottomTabs";
-
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { ProductsContextProvider } from "../contexts/ProductsContext";

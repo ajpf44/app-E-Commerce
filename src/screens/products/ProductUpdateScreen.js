@@ -8,6 +8,7 @@ import {
     TextInput,
     Pressable,
     Alert,
+    ActivityIndicator,
 } from "react-native";
 import { useState, useContext } from "react";
 import { ProductsContext } from "../../contexts/ProductsContext";
@@ -28,9 +29,11 @@ const ProductUpdateScreen = ({ route, navigation }) => {
     const [productName, setProductName] = useState(product.name);
     const [productPrice, setProductPrice] = useState(product.price);
     const [productSize, setProductSize] = useState(product.size);
+    const [productInventory, setProductInventory] = useState(product.inventory);
     const [productDescription, setProductDescription] = useState(
         product.description
     );
+    const [isFetching, setIsFetching] = useState(false);
 
     const prodCtx = useContext(ProductsContext);
 
@@ -42,7 +45,6 @@ const ProductUpdateScreen = ({ route, navigation }) => {
             quality: 0.1, //Configurado assim para evitar lentidão do sistema
             base64: true,
         });
-    
         if (!!result) {
             setImage(result.assets[0].base64);
         }
@@ -76,6 +78,12 @@ const ProductUpdateScreen = ({ route, navigation }) => {
             />
             <TextInput
                 style={styles.input}
+                placeholder="Insira o Estoque do Produto"
+                value={productInventory}
+                onChangeText={setProductInventory}
+            />
+            <TextInput
+                style={styles.input}
                 placeholder="Insira a Descrição do Produto"
                 value={productDescription}
                 onChangeText={setProductDescription}
@@ -89,53 +97,65 @@ const ProductUpdateScreen = ({ route, navigation }) => {
                     <Picker.Item key={size} label={size} value={size} />
                 ))}
             </Picker>
+            {isFetching ? (
+                <ActivityIndicator size={60} />
+            ) : (
+                <View style={styles.onPressContainer}>
+                    <TouchableOpacity
+                        style={styles.buttonRegister}
+                        onPress={async () => {
+                            setIsFetching(true);
+                            await updateProduct(product.id, {
+                                name: productName,
+                                price: productPrice,
+                                size: productSize,
+                                inventory: productInventory,
+                                description: productDescription,
+                                image: image,
+                            });
+                            refreshProducts(prodCtx);
+                            setIsFetching(false);
+                            navigation.navigate("ProductsHome");
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Atualizar Produto</Text>
+                    </TouchableOpacity>
 
-            <TouchableOpacity
-                style={styles.buttonRegister}
-                onPress={async() => {
-                    await updateProduct(product.id, {
-                        name: productName,
-                        price: productPrice,
-                        size: productSize,
-                        description: productDescription,
-                        image: image,
-                    });
-                    refreshProducts(prodCtx);
-                    navigation.navigate("ProductsHome")
-                }}
-            >
-                <Text style={styles.buttonText}>Atualizar Produto</Text>
-            </TouchableOpacity>
-
-            <View style={styles.iconsContainer}>
-                <Pressable
-                    onPress={() => {
-                        Alert.alert(
-                            "Confirmação",
-                            `Realmente deseja excluir ${product.name}?`,
-                            [
-                                {
-                                    text: "Sim",
-                                    onPress: async () => {
-                                        await deleteProduct(product.id);
-                                        navigation.navigate("ProductHome");
-                                        refreshProducts(prodCtx);
-                                    },
-                                },
-                                {
-                                    text: "Não",
-                                },
-                            ]
-                        );
-                    }}
-                >
-                    <FontAwesome
-                        name="trash-o"
-                        size={iconsSize}
-                        color="black"
-                    />
-                </Pressable>
-            </View>
+                    <View style={styles.iconsContainer}>
+                        <Pressable
+                            onPress={() => {
+                                Alert.alert(
+                                    "Confirmação",
+                                    `Realmente deseja excluir ${product.name}?`,
+                                    [
+                                        {
+                                            text: "Sim",
+                                            onPress: async () => {
+                                                setIsFetching(true);
+                                                await deleteProduct(product.id);
+                                                refreshProducts(prodCtx);
+                                                setIsFetching(false)
+                                                navigation.navigate(
+                                                    "ProductsHome"
+                                                );
+                                            },
+                                        },
+                                        {
+                                            text: "Não",
+                                        },
+                                    ]
+                                );
+                            }}
+                        >
+                            <FontAwesome
+                                name="trash-o"
+                                size={iconsSize}
+                                color="black"
+                            />
+                        </Pressable>
+                    </View>
+                </View>
+            )}
         </View>
     );
 };
@@ -179,7 +199,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         width: Dimensions.get("window").width * 0.7,
         marginTop: 20,
-        justifyContent: "space-around",
+        justifyContent: "center",
     },
     imageButton: {
         width: "80%",
@@ -212,6 +232,10 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "#fff",
+    },
+    onPressContainer: {
+        width: "100%",
+        alignItems: "center",
     },
 });
 
