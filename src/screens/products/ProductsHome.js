@@ -33,7 +33,9 @@ const filteredProductsForTerm = (products = "", term = "") => {
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
     const [searchTerm, setSearchTerm] = useState("");
-    const [productsFromSearch, setProductsFromSearch] = useState(prodCtx.products);
+    const [productsToDisplay, setProductsToDisplay] = useState(
+        prodCtx.products
+    );
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -60,20 +62,37 @@ const ProductHome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{backgroundColor: "#dddddd", flexDirection: "row", gap: 10, padding: 10, borderRadius: 10}}>
+            <View
+                style={{
+                    backgroundColor: "#dfdfde",
+                    flexDirection: "row",
+                    gap: 10,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                }}
+            >
                 <AntDesign name="search1" size={24} color="black" />
                 <TextInput
                     placeholder="Pesquisar"
-                    onChangeText={setSearchTerm}
+                    onChangeText={(text) => {
+                        setSearchTerm(text);
+                        setProductsToDisplay(
+                            filteredProductsForTerm(
+                                prodCtx.products,
+                                searchTerm
+                            )
+                        );
+                    }}
                     onEndEditing={() =>
-                        setProductsFromSearch(
+                        setProductsToDisplay(
                             filteredProductsForTerm(
                                 prodCtx.products,
                                 searchTerm
                             )
                         )
                     }
-                    style={{fontSize: 16}}
+                    style={{ fontSize: 16 }}
                 />
             </View>
             {prodCtx.isFetchingProducts ? (
@@ -86,9 +105,9 @@ const ProductHome = ({ navigation }) => {
                 >
                     <ActivityIndicator size={60} />
                 </View>
-            ) : productsFromSearch.length ? (
+            ) : productsToDisplay.length ? (
                 <FlatList
-                    data={productsFromSearch}
+                    data={productsToDisplay}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                 />
