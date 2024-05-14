@@ -7,33 +7,33 @@ import {
     TouchableOpacity,
     StyleSheet,
     ActivityIndicator,
+    TextInput,
 } from "react-native";
-import { getAllProducts } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
-/*
-const products = [
-  {
-    id: '1',
-    name: 'Produto 1',
-    price: 'R$10,00',
-    description: 'Descrição do produto 1',
-    image: 'https://via.placeholder.com/150',
-    sizes: ['P', 'M', 'G'],
-  },
-  {
-    id: '2',
-    name: 'Produto 2',
-    price: 'R$20,00',
-    description: 'Descrição do produto 2',
-    image: 'https://via.placeholder.com/150',
-    sizes: ['P', 'M', 'G', 'GG'],
-  },
-  // Adicione mais produtos aqui
-];
-*/
+import { AntDesign } from "@expo/vector-icons";
+const filteredProductsForTerm = (products = "", term = "") => {
+    return products.filter((prod) => {
+        const prodNameLowerCase = prod.name.toLowerCase();
+
+        const prodDescriptionLowerCase = prod.description.toLowerCase();
+
+        const searchTermLowerCase = term.toLowerCase();
+
+        if (
+            prodNameLowerCase.includes(searchTermLowerCase) ||
+            prodDescriptionLowerCase.includes(searchTermLowerCase)
+        )
+            return true;
+
+        return false;
+    });
+};
+
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [productsFromSearch, setProductsFromSearch] = useState(prodCtx.products);
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -60,6 +60,22 @@ const ProductHome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <View style={{backgroundColor: "#dddddd", flexDirection: "row", gap: 10, padding: 10, borderRadius: 10}}>
+                <AntDesign name="search1" size={24} color="black" />
+                <TextInput
+                    placeholder="Pesquisar"
+                    onChangeText={setSearchTerm}
+                    onEndEditing={() =>
+                        setProductsFromSearch(
+                            filteredProductsForTerm(
+                                prodCtx.products,
+                                searchTerm
+                            )
+                        )
+                    }
+                    style={{fontSize: 16}}
+                />
+            </View>
             {prodCtx.isFetchingProducts ? (
                 <View
                     style={{
@@ -70,9 +86,9 @@ const ProductHome = ({ navigation }) => {
                 >
                     <ActivityIndicator size={60} />
                 </View>
-            ) : prodCtx.products.length ? (
+            ) : productsFromSearch.length ? (
                 <FlatList
-                    data={prodCtx.products}
+                    data={productsFromSearch}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                 />
@@ -85,7 +101,7 @@ const ProductHome = ({ navigation }) => {
                     }}
                 >
                     <Text style={{ fontSize: 16 }}>
-                        Nenhum produto cadastrado
+                        Nenhum produto encontrado
                     </Text>
                 </View>
             )}
@@ -123,8 +139,8 @@ const styles = StyleSheet.create({
     inventory: {
         fontSize: 14,
         color: "#666",
-        marginTop: 2
-    }
+        marginTop: 2,
+    },
 });
 
 export default ProductHome;
