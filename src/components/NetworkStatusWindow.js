@@ -2,7 +2,7 @@ import { Text } from "react-native";
 
 function NetworkStatusWindow({isConnected}) {
     console.log("isConnected: " , isConnected);
-    return false ? (
+    return isConnected ? (
         <></>
     ) : (
         <Text
