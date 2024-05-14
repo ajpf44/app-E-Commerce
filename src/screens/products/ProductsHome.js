@@ -45,6 +45,7 @@ const ProductHome = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <NetworkStatusWindow/>
+            
             <SearchProducts
                 setSearchTerm={setSearchTerm}
                 setProductsToDisplay={setProductsToDisplay}

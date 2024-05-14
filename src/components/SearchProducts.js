@@ -37,7 +37,7 @@ function SearchProducts({searchTerm,setSearchTerm,setProductsToDisplay, products
                 onChangeText={(text) => {
                     setSearchTerm(text);
                     setProductsToDisplay(
-                        filteredProductsForTerm(products, searchTerm)
+                        filteredProductsForTerm(products, text)
                     );
                 }}
                 onEndEditing={() =>
@@ -45,6 +45,7 @@ function SearchProducts({searchTerm,setSearchTerm,setProductsToDisplay, products
                         filteredProductsForTerm(products, searchTerm)
                     )
                 }
+                on
                 style={{ fontSize: 16 }}
             />
         </View>
