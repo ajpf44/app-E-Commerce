@@ -10,7 +10,7 @@ import {
     Pressable,
     TouchableOpacity,
 } from "react-native";
-import { AntDesign,MaterialIcons } from "@expo/vector-icons";
+import { AntDesign} from "@expo/vector-icons";
 const logoIMG = require("../../../assets/logo-inverted-cropped.jpg");
 
 function HomeApp({ navigation }) {
