@@ -13,11 +13,13 @@ function ProductsStack() {
             <Screen
                 name="ProductsHome"
                 component={ProductsHome}
+                options={{ headerShown: false }}
             />
             <Screen name="ProductDetails" component={ProductDetailsScreen} />
             <Screen 
                 name="ProductUpdateScreen" 
                 component={ProductUpdateScreen} 
+                options={{ headerShown: false }}
             />
         </Navigator>
     );

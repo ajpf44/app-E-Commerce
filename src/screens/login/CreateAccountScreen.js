@@ -23,9 +23,12 @@ function CreateAccountScreen({ navigation }) {
 
     //Resposta para o usuário se a conta foi criada ou não, ou porque
     const [creationStatus, setCreationStatus] = useState("");
-
+    const logoIMG = require("../../../assets/logo-inverted-cropped.jpg"); 
     return (
         <View style={styles.container}>
+            <View style={styles.header}>
+            <Image source={logoIMG} style={styles.logoHeader} />
+            </View>
             <View style={styles.inputContainer}>
                 <Text>Cadastrar conta de funcionário</Text>
             </View>
@@ -87,6 +90,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
+    },
+    header: {
+        backgroundColor: "#000",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "absolute",
+        top: "3%",
+        left: 0,
+        right:0,
+        padding: 10,
+  
+    },
+    logoHeader: {
+        width: 40 * 1.25,
+        height: 40,
     },
     textInput: {
         borderColor: "black",

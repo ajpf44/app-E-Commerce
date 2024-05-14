@@ -8,6 +8,8 @@ import {
     StyleSheet,
     Dimensions,
     ActivityIndicator,
+    StatusBar,
+    Image,
 } from "react-native";
 import { useContext, useState } from "react";
 
@@ -46,9 +48,12 @@ function HomeLoginScreen({ navigation }) {
     const [loginStatus, setLoginStatus] = useState(true);
 
     const [isVerifyingLogin, setIsVerifyingLogin] = useState(false);
-
+    const logoIMG = require("../../../assets/logo-inverted-cropped.jpg"); 
     return (
         <View style={styles.container}>
+            <View style={styles.header}>
+            <Image source={logoIMG} style={styles.logoHeader} />
+            </View>
             <View style={styles.inputContainer}>
                 <Text>Email:</Text>
                 <TextInput
@@ -103,6 +108,21 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
+    },
+    header: {
+        backgroundColor: "#000",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "absolute",
+        top: "3%",
+        left: 0,
+        right:0,
+        padding: 10,
+  
+    },
+    logoHeader: {
+        width: 40 * 1.25,
+        height: 40,
     },
     textInput: {
         borderColor: "black",

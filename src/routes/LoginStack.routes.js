@@ -14,6 +14,7 @@ function LoginStack(){
                 <Screen 
                     name="HomeLoginScreen"
                     component={HomeLoginScreen}
+                    options={{ headerShown: false }} 
                 />
                 <Screen 
                     name="CreateAccountScreen"

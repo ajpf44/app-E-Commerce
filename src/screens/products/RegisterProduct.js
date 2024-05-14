@@ -70,7 +70,7 @@ function RegisterProduct() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [16, 9],
+            aspect: [4, 3],
             quality: 0.1, //Configurado assim para evitar lentidão do sistema
             base64: true,
         });
