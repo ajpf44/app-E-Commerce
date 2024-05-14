@@ -20,6 +20,8 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { deleteProduct, updateProduct } from "../../services/products";
 
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+
 const ProductUpdateScreen = ({ route, navigation }) => {
     const { product } = route.params; //Produto que foi selecionado
 
@@ -52,6 +54,7 @@ const ProductUpdateScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
                 <Text style={styles.buttonText}>
                     Escolher Imagem do Produto

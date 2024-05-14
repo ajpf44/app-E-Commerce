@@ -17,6 +17,8 @@ import { storageTokenInCache, getTokenInCache } from "../../utils/asyncStorage";
 import { signIn } from "../../services/auth";
 import { AuthContext } from "../../contexts/AuthContext";
 
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+
 //Verifica se o email e senha estão corretos
 async function startSession(
     inputEmail,
@@ -61,6 +63,7 @@ function HomeLoginScreen({ navigation }) {
     const [isVerifyingLogin, setIsVerifyingLogin] = useState(false);
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <View style={styles.inputContainer}>
                 <Text>Email:</Text>
                 <TextInput

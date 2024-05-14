@@ -19,7 +19,7 @@ const logoIMG = require("../../../assets/logo-inverted-cropped.jpg");
 function HomeApp({ navigation }) {
     return (
         <View style={styles.container}>
-            <NetworkStatusWindow isConnected={useContext(NetInfoContext).isConnected}/>
+            <NetworkStatusWindow/>
             <StatusBar style="inverted" />
             <View style={styles.header}>
                 <Image source={logoIMG} style={styles.logoHeader} />

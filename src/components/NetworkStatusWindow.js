@@ -1,7 +1,11 @@
 import { Text } from "react-native";
 
-function NetworkStatusWindow({isConnected}) {
-    console.log("isConnected: " , isConnected);
+import { useContext } from "react";
+import { NetInfoContext } from "../contexts/NetInfoContext";
+
+function NetworkStatusWindow() {
+    const isConnected = useContext(NetInfoContext).isConnected;
+
     return isConnected ? (
         <></>
     ) : (

@@ -1,5 +1,5 @@
 //Alexandre
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
     View,
     Text,
@@ -12,6 +12,8 @@ import {
 import createAccount from "../../utils/createAccount";
 import ButtonPressable from "../../components/ButtonPressable";
 
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+
 function CreateAccountScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
@@ -23,6 +25,7 @@ function CreateAccountScreen({ navigation }) {
     const [creationStatus, setCreationStatus] = useState("");
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow />
             <View style={styles.inputContainer}>
                 <Text>Cadastrar conta de funcionário</Text>
             </View>

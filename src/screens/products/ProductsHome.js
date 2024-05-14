@@ -12,6 +12,8 @@ import {
 import { ProductsContext } from "../../contexts/ProductsContext";
 import SearchProducts from "../../components/SearchProducts";
 
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
     const [searchTerm, setSearchTerm] = useState("");
@@ -42,6 +44,7 @@ const ProductHome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <SearchProducts
                 setSearchTerm={setSearchTerm}
                 setProductsToDisplay={setProductsToDisplay}

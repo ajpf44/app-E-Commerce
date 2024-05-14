@@ -18,6 +18,7 @@ import refreshProducts from "../../utils/refreshProducts";
 import { Picker } from "@react-native-picker/picker";
 
 import FloatingWindow from "../../components/app/FloatingConfirmationWIndow";
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
 
 function RegisterProduct() {
     const [image, setImage] = useState(null);
@@ -82,6 +83,7 @@ function RegisterProduct() {
 
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <Text style={styles.title}>Registrar Novo Produto</Text>
             <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
                 <Text style={styles.buttonText}>

@@ -17,6 +17,7 @@ import createAccount from "../../utils/createAccount";
 import { updateEmployee } from "../../services/employees";
 import { AuthContext } from "../../contexts/AuthContext";
 import { clearTokenInCache } from "../../utils/asyncStorage";
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
 
 function EmployeeCRUD() {
     const [id, setId] = useState("");
@@ -35,6 +36,7 @@ function EmployeeCRUD() {
 
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <View
                 style={{
                     width: Dimensions.get("window").width,
