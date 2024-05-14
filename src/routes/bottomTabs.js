@@ -21,6 +21,7 @@ function Tabs() {
             prodCtx.setIsFetching(true);
             const p = await getAllProducts();
 
+            prodCtx.setIsFetching(false);
             prodCtx.setProducts(p);
         };
 

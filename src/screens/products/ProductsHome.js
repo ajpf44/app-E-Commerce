@@ -10,32 +10,14 @@ import {
     TextInput,
 } from "react-native";
 import { ProductsContext } from "../../contexts/ProductsContext";
-
-import { AntDesign } from "@expo/vector-icons";
-const filteredProductsForTerm = (products = "", term = "") => {
-    return products.filter((prod) => {
-        const prodNameLowerCase = prod.name.toLowerCase();
-
-        const prodDescriptionLowerCase = prod.description.toLowerCase();
-
-        const searchTermLowerCase = term.toLowerCase();
-
-        if (
-            prodNameLowerCase.includes(searchTermLowerCase) ||
-            prodDescriptionLowerCase.includes(searchTermLowerCase)
-        )
-            return true;
-
-        return false;
-    });
-};
+import SearchProducts from "../../components/SearchProducts";
 
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
     const [searchTerm, setSearchTerm] = useState("");
-    const [productsToDisplay, setProductsToDisplay] = useState(
-        prodCtx.products
-    );
+    const [productsToDisplay, setProductsToDisplay] = useState([]);
+
+    console.log(prodCtx.isFetching);
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -62,40 +44,14 @@ const ProductHome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View
-                style={{
-                    backgroundColor: "#dfdfde",
-                    flexDirection: "row",
-                    gap: 10,
-                    padding: 10,
-                    borderRadius: 10,
-                    marginBottom: 10,
-                }}
-            >
-                <AntDesign name="search1" size={24} color="black" />
-                <TextInput
-                    placeholder="Pesquisar"
-                    onChangeText={(text) => {
-                        setSearchTerm(text);
-                        setProductsToDisplay(
-                            filteredProductsForTerm(
-                                prodCtx.products,
-                                searchTerm
-                            )
-                        );
-                    }}
-                    onEndEditing={() =>
-                        setProductsToDisplay(
-                            filteredProductsForTerm(
-                                prodCtx.products,
-                                searchTerm
-                            )
-                        )
-                    }
-                    style={{ fontSize: 16 }}
-                />
-            </View>
-            {prodCtx.isFetchingProducts ? (
+            <SearchProducts
+                setSearchTerm={setSearchTerm}
+                setProductsToDisplay={setProductsToDisplay}
+                products={prodCtx.products}
+                searchTerm={searchTerm}
+            />
+            
+            { !!prodCtx.isFetching && (
                 <View
                     style={{
                         flex: 1,
@@ -105,13 +61,39 @@ const ProductHome = ({ navigation }) => {
                 >
                     <ActivityIndicator size={60} />
                 </View>
-            ) : productsToDisplay.length ? (
+            )}
+            {!prodCtx.isFetching && !!searchTerm.length && productsToDisplay && (
                 <FlatList
-                    data={productsToDisplay}
+                    data={
+                        searchTerm.length ? productsToDisplay : prodCtx.products
+                    }
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                 />
-            ) : (
+            )}
+
+            {!prodCtx.isFetching && !!searchTerm.length && !productsToDisplay && (
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Text style={{ fontSize: 16 }}>
+                        Nenhum produto encontrado
+                    </Text>
+                </View>
+            )}
+
+            {!prodCtx.isFetching && !searchTerm.length && !!prodCtx.products && (
+                <FlatList
+                    data={prodCtx.products}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                />
+            )}
+            {!prodCtx.isFetching && !searchTerm.length && !prodCtx.products && (
                 <View
                     style={{
                         flex: 1,
