@@ -18,6 +18,7 @@ import refreshProducts from "../../utils/refreshProducts";
 import { Picker } from "@react-native-picker/picker";
 
 import FloatingWindow from "../../components/app/FloatingConfirmationWIndow";
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
 
 function RegisterProduct() {
     const [image, setImage] = useState(null);
@@ -70,7 +71,7 @@ function RegisterProduct() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [16, 9],
+            aspect: [4, 3],
             quality: 0.1, //Configurado assim para evitar lentidão do sistema
             base64: true,
         });
@@ -82,6 +83,7 @@ function RegisterProduct() {
 
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <Text style={styles.title}>Registrar Novo Produto</Text>
             <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
                 <Text style={styles.buttonText}>

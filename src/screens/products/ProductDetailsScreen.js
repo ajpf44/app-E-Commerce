@@ -17,6 +17,8 @@ import { deleteProduct } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import refreshProducts from "../../utils/refreshProducts";
 
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+
 const ProductDetailsScreen = ({ route, navigation }) => {
     const { product } = route.params; //Produto que foi selecionado
     const [selectedSize, setSelectedSize] = useState(product.size);
@@ -28,6 +30,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow/>
             <Image
                 source={{
                     uri: product.image
@@ -37,7 +40,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
                 style={styles.image}
             />
             <Text style={styles.name}>{product.name}</Text>
-            <Text style={styles.price}>Preço: R$ {product.price}</Text>
+            <Text style={styles.price}>Preço: {product.price}</Text>
             <Text style={styles.description}>
                 Descrição: {product.description}
             </Text>

@@ -7,33 +7,17 @@ import {
     TouchableOpacity,
     StyleSheet,
     ActivityIndicator,
+    TextInput,
 } from "react-native";
-import { getAllProducts } from "../../services/products";
 import { ProductsContext } from "../../contexts/ProductsContext";
+import SearchProducts from "../../components/SearchProducts";
 
-/*
-const products = [
-  {
-    id: '1',
-    name: 'Produto 1',
-    price: 'R$10,00',
-    description: 'Descrição do produto 1',
-    image: 'https://via.placeholder.com/150',
-    sizes: ['P', 'M', 'G'],
-  },
-  {
-    id: '2',
-    name: 'Produto 2',
-    price: 'R$20,00',
-    description: 'Descrição do produto 2',
-    image: 'https://via.placeholder.com/150',
-    sizes: ['P', 'M', 'G', 'GG'],
-  },
-  // Adicione mais produtos aqui
-];
-*/
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
+
 const ProductHome = ({ navigation }) => {
     const prodCtx = useContext(ProductsContext);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [productsToDisplay, setProductsToDisplay] = useState([]);
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -52,7 +36,7 @@ const ProductHome = ({ navigation }) => {
             />
             <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.price}>Preço: R$ {item.price}</Text>
+                <Text style={styles.price}>Preço: {item.price}</Text>
                 <Text style={styles.inventory}>Estoque: {item.inventory}</Text>
             </View>
         </TouchableOpacity>
@@ -60,7 +44,16 @@ const ProductHome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {prodCtx.isFetchingProducts ? (
+            <NetworkStatusWindow/>
+            
+            <SearchProducts
+                setSearchTerm={setSearchTerm}
+                setProductsToDisplay={setProductsToDisplay}
+                products={prodCtx.products}
+                searchTerm={searchTerm}
+            />
+            
+            { !!prodCtx.isFetching && (
                 <View
                     style={{
                         flex: 1,
@@ -70,13 +63,18 @@ const ProductHome = ({ navigation }) => {
                 >
                     <ActivityIndicator size={60} />
                 </View>
-            ) : prodCtx.products.length ? (
+            )}
+            {!prodCtx.isFetching && !!searchTerm.length && productsToDisplay && (
                 <FlatList
-                    data={prodCtx.products}
+                    data={
+                        searchTerm.length ? productsToDisplay : prodCtx.products
+                    }
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                 />
-            ) : (
+            )}
+
+            {!prodCtx.isFetching && !!searchTerm.length && !productsToDisplay && (
                 <View
                     style={{
                         flex: 1,
@@ -85,7 +83,28 @@ const ProductHome = ({ navigation }) => {
                     }}
                 >
                     <Text style={{ fontSize: 16 }}>
-                        Nenhum produto cadastrado
+                        Nenhum produto encontrado
+                    </Text>
+                </View>
+            )}
+
+            {!prodCtx.isFetching && !searchTerm.length && !!prodCtx.products && (
+                <FlatList
+                    data={prodCtx.products}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                />
+            )}
+            {!prodCtx.isFetching && !searchTerm.length && !prodCtx.products && (
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Text style={{ fontSize: 16 }}>
+                        Nenhum produto encontrado
                     </Text>
                 </View>
             )}
@@ -123,8 +142,8 @@ const styles = StyleSheet.create({
     inventory: {
         fontSize: 14,
         color: "#666",
-        marginTop: 2
-    }
+        marginTop: 2,
+    },
 });
 
 export default ProductHome;

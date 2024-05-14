@@ -1,5 +1,5 @@
 //Alexandre
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
     View,
     Text,
@@ -9,10 +9,10 @@ import {
     ActivityIndicator,
 } from "react-native";
 
-
-
 import createAccount from "../../utils/createAccount";
 import ButtonPressable from "../../components/ButtonPressable";
+
+import NetworkStatusWindow from "../../components/NetworkStatusWindow";
 
 function CreateAccountScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("");
@@ -23,9 +23,9 @@ function CreateAccountScreen({ navigation }) {
 
     //Resposta para o usuário se a conta foi criada ou não, ou porque
     const [creationStatus, setCreationStatus] = useState("");
-
     return (
         <View style={styles.container}>
+            <NetworkStatusWindow />
             <View style={styles.inputContainer}>
                 <Text>Cadastrar conta de funcionário</Text>
             </View>
@@ -53,20 +53,18 @@ function CreateAccountScreen({ navigation }) {
             <View style={styles.buttonsContainer}>
                 {!isCreating && (
                     <ButtonPressable
-                    pressFunc={() =>
-                        createAccount(
-                            inputEmail,
-                            inputPassword,
-                            inputName,
-                            navigation,
-                            setCreationStatus,
-                            setIsCreating
-                        )
-                    }
-                    text = "CRIAR CONTA"
-
-
-                />
+                        pressFunc={() =>
+                            createAccount(
+                                inputEmail,
+                                inputPassword,
+                                inputName,
+                                navigation,
+                                setCreationStatus,
+                                setIsCreating
+                            )
+                        }
+                        text="CRIAR CONTA"
+                    />
                 )}
 
                 {isCreating && (

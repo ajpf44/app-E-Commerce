@@ -3,16 +3,13 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // Importando Ionicons
-import HomeManagement from "../screens/Management/HomeManagement";
-import Product from "../screens/Management/Product";
-import RegisterProduct from "../screens/Management/RegisterProduct";
-import SimulateOrder from "../screens/Management/EmployeesOrder";
+import RegisterProduct from "../screens/products/RegisterProduct";
 import ProductsStack from "./ProductsStack";
 import EmployeeCRUD from "../screens/employees/EmployeeCRUD";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect} from "react";
 import { getAllProducts } from "../services/products";
 import { ProductsContext } from "../contexts/ProductsContext";
-import HomeApp from "../screens/productsCrud/HomeApp";
+import HomeStack from "./HomeStack";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -24,6 +21,7 @@ function Tabs() {
             prodCtx.setIsFetching(true);
             const p = await getAllProducts();
 
+            prodCtx.setIsFetching(false);
             prodCtx.setProducts(p);
         };
 
@@ -36,7 +34,7 @@ function Tabs() {
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
-                        if (route.name === "Management") {
+                        if (route.name === "Home") {
                             iconName = focused? "home" : "home-outline";
                         } else if (route.name === "Register") {
                             iconName = focused? "add-circle" : "add-circle-outline";
@@ -61,8 +59,8 @@ function Tabs() {
                 })}
             >
                 <Screen
-                    name="Management"
-                    component={HomeApp}
+                    name="Home"
+                    component={HomeStack}
                     options={{
                         headerShown: false,
                         title: "Gerenciamento",
