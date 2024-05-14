@@ -16,6 +16,7 @@ import EmployeeList from "../../components/app/EmployeeList";
 import createAccount from "../../utils/createAccount";
 import { updateEmployee } from "../../services/employees";
 import { AuthContext } from "../../contexts/AuthContext";
+import { clearTokenInCache } from "../../utils/asyncStorage";
 
 function EmployeeCRUD() {
     const [id, setId] = useState("");
@@ -44,6 +45,12 @@ function EmployeeCRUD() {
                     gap: 10,
                 }}
             >
+                <View style={[styles.inputContainer, {marginTop: 10}]}>
+                    <Button title="Logout" color="black" onPress={()=>{
+                        authCtx.setToken('');
+                        clearTokenInCache();
+                    }}/>
+                </View>
                 <View>
                     <View style={styles.inputContainer}>
                         <Text>Id: </Text>
@@ -84,19 +91,31 @@ function EmployeeCRUD() {
                         style={styles.Pressable}
                         title="Registrar"
                         onPress={() => {
-                            createAccount(email, password, name, null, null, null, authCtx.token);
+                            createAccount(
+                                email,
+                                password,
+                                name,
+                                null,
+                                null,
+                                null,
+                                authCtx.token
+                            );
                         }}
                     >
                         <Text style={styles.PressableText}>Registrar</Text>
                     </Pressable>
-                    <Pressable style={styles.Pressable} title="Atualizar" onPress={ async()=>{
-                        const employee = {
-                            name: name,
-                            email: email,
-                            password: password
-                        }
-                        await updateEmployee(id,authCtx.token, employee)
-                    }}>
+                    <Pressable
+                        style={styles.Pressable}
+                        title="Atualizar"
+                        onPress={async () => {
+                            const employee = {
+                                name: name,
+                                email: email,
+                                password: password,
+                            };
+                            await updateEmployee(id, authCtx.token, employee);
+                        }}
+                    >
                         <Text style={styles.PressableText}>Atualizar</Text>
                     </Pressable>
                 </View>

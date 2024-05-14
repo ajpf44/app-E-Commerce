@@ -12,7 +12,7 @@ import {
     Image,
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storageTokenInCache, getTokenInCache } from "../../utils/asyncStorage";
 
 import { signIn } from "../../services/auth";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -40,23 +40,6 @@ async function startSession(
     setIsVerifyingLogin(false);
 }
 
-async function storageTokenInCache(token) {
-    try {
-        await AsyncStorage.setItem("tokenKey", token);
-    } catch (e) {
-        console.log("Error storing token: "  + e)
-    }
-}
-
-async function getTokenInCache(){
-    try {
-        const token = await AsyncStorage.getItem('tokenKey');
-
-        return token
-      } catch (e) {
-        console.log("Error getting token: " + e)
-      }
-}
 function HomeLoginScreen({ navigation }) {
     const [inputEmail, setInputEmail] = useState("teste@teste.com");
     const [inputPassword, setInputPassword] = useState("teste@123");
@@ -76,12 +59,8 @@ function HomeLoginScreen({ navigation }) {
     const [loginStatus, setLoginStatus] = useState(true);
 
     const [isVerifyingLogin, setIsVerifyingLogin] = useState(false);
-    const logoIMG = require("../../../assets/logo-inverted-cropped.jpg"); 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-            <Image source={logoIMG} style={styles.logoHeader} />
-            </View>
             <View style={styles.inputContainer}>
                 <Text>Email:</Text>
                 <TextInput
@@ -136,21 +115,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
-    },
-    header: {
-        backgroundColor: "#000",
-        flexDirection: "row",
-        alignItems: "center",
-        position: "absolute",
-        top: "3%",
-        left: 0,
-        right:0,
-        padding: 10,
-  
-    },
-    logoHeader: {
-        width: 40 * 1.25,
-        height: 40,
     },
     textInput: {
         borderColor: "black",
