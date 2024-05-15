@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     width: '40%',
     marginTop: 5,
     marginBottom:30,
-    marginLeft: 125,
+    marginLeft: 100,
 },
 
 textoTit: {
